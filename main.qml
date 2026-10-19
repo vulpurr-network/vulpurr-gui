@@ -57,7 +57,7 @@ import "version.js" as Version
 ApplicationWindow {
     id: appWindow
     signal gracefulShutdownComplete()
-    title: "Monero" +
+    title: "Vulpurr" +
         (persistentSettings.displayWalletNameInTitleBar && walletName
         ? " - " + walletName
         : "")
@@ -437,18 +437,18 @@ ApplicationWindow {
         leftPanel.balanceString = balance
         leftPanel.balanceUnlockedString = balanceU
         if (middlePanel.state === "Account") {
-            middlePanel.accountView.balanceAllText = walletManager.displayAmount(appWindow.currentWallet.balanceAll()) + " XMR";
-            middlePanel.accountView.unlockedBalanceAllText = walletManager.displayAmount(appWindow.currentWallet.unlockedBalanceAll()) + " XMR";
+            middlePanel.accountView.balanceAllText = walletManager.displayAmount(appWindow.currentWallet.balanceAll()) + " VUP";
+            middlePanel.accountView.unlockedBalanceAllText = walletManager.displayAmount(appWindow.currentWallet.unlockedBalanceAll()) + " VUP";
         }
     }
 
     function onUriHandler(uri){
-        if (uri && (uri.startsWith("monero://") || uri.startsWith("monero:"))) {
-            const normalizedUri = uri.replace("monero://", "monero:");
+        if (uri && (uri.startsWith("vulpurr://") || uri.startsWith("vulpurr:"))) {
+            const normalizedUri = uri.replace("vulpurr://", "vulpurr:");
             const parsed = walletManager.parse_uri_to_object(normalizedUri);
 
             if (parsed.error) {
-                console.log("Invalid Monero URI: " + parsed.error);
+                console.log("Invalid Vulpurr URI: " + parsed.error);
             } else {
                 middlePanel.transferView.sendTo(
                     parsed.address || "",
@@ -543,7 +543,7 @@ ApplicationWindow {
                     console.error("Error opening wallet with password: ", wallet.errorString);
                     var errorMessage = qsTr("Couldn't open wallet: ") + wallet.errorString;
                     if (wallet.isLedger()) {
-                        errorMessage += "\n" + qsTr("Make sure your Ledger is connected and unlocked, and the Monero app is open.");
+                        errorMessage += "\n" + qsTr("Make sure your Ledger is connected and unlocked, and the Vulpurr app is open.");
                     } else if (wallet.isTrezor()) {
                         errorMessage += "\n" + qsTr("Make sure your Trezor is connected and unlocked.");
                     }
@@ -789,8 +789,9 @@ ApplicationWindow {
         // Pause refresh while starting daemon
         currentWallet.pauseRefresh();
 
-        const noSync = appWindow.walletMode === 0;
-        const bootstrapNodeAddress = persistentSettings.walletMode < 2 ? "auto" : persistentSettings.bootstrapNodeAddress
+        // Vulpurr: always sync locally; simple modes lean on our public node until synced
+        const noSync = false;
+        const bootstrapNodeAddress = persistentSettings.walletMode < 2 ? "node.vulpurr.com:27089" : persistentSettings.bootstrapNodeAddress
         daemonManager.start(flags, persistentSettings.nettype, persistentSettings.blockchainDataDir, bootstrapNodeAddress, noSync, persistentSettings.pruneBlockchain);
     }
 
@@ -1468,7 +1469,7 @@ ApplicationWindow {
                 oshelper.createDesktopEntry();
             } else if (isLinux) {
                 confirmationDialog.title = qsTr("Desktop entry") + translationManager.emptyString;
-                confirmationDialog.text  = qsTr("Would you like to register Monero GUI Desktop entry?") + translationManager.emptyString;
+                confirmationDialog.text  = qsTr("Would you like to register Vulpurr GUI Desktop entry?") + translationManager.emptyString;
                 confirmationDialog.cancelText = qsTr("No") + translationManager.emptyString;
                 confirmationDialog.okText = qsTr("Yes") + translationManager.emptyString;
                 confirmationDialog.onAcceptedCallback = function() {
@@ -1487,7 +1488,7 @@ ApplicationWindow {
         settings: persistentSettings
         unportableFileName: {
             if(isTails && tailsUsePersistence)
-                return homePath + "/Persistent/Monero/monero-core.conf";
+                return homePath + "/Persistent/Vulpurr/monero-core.conf";
             return "";
         }
     }
@@ -1557,6 +1558,8 @@ ApplicationWindow {
         property bool pruneBlockchain: false
 
         property bool fiatPriceEnabled: false
+        // VUP has no market yet: XMR prices from Kraken/CoinPaprika would show a fake fiat value
+        onFiatPriceEnabledChanged: if (fiatPriceEnabled) fiatPriceEnabled = false
         property bool fiatPriceToggle: false
         property string fiatPriceProvider: "kraken"
         property string fiatPriceCurrency: "xmrusd"
@@ -2153,10 +2156,7 @@ ApplicationWindow {
         if (!appWindow.daemonRunning) {
             return true;
         }
-        if (appWindow.walletMode == 0 && !daemonManager.noSync()) {
-            return false;
-        }
-        if (appWindow.walletMode == 1 && daemonManager.noSync()) {
+        if (daemonManager.noSync()) {
             return false;
         }
         return true;
@@ -2178,7 +2178,7 @@ ApplicationWindow {
             return;
         }
 
-        const simpleModeFlags = "--enable-dns-blocklist --out-peers 16 --no-igd";
+        const simpleModeFlags = "--out-peers 16 --no-igd";
         if (appWindow.daemonRunning) {
             appWindow.stopDaemon(function() {
                 appWindow.startDaemon(simpleModeFlags)
@@ -2333,13 +2333,44 @@ ApplicationWindow {
         }
     }
 
+    // Vulpurr: signed self-update instead of Monero's DNS update check
+    property int vulpurrDismissedVersion: 0
+
+    function applyVulpurrUpdate() {
+        if (vulpurrUpdater.applyAndRestart()) {
+            showProcessingSplash("Устанавливаю обновление Vulpurr...");
+            closeAccepted();
+        }
+    }
+
+    Connections {
+        target: vulpurrUpdater
+        function onUpdateReady(version, notes) {
+            if (typeof currentWallet === "undefined" || currentWallet === null) {
+                applyVulpurrUpdate();
+                return;
+            }
+            if (version <= vulpurrDismissedVersion)
+                return;
+            confirmationDialog.title = "Обновление Vulpurr";
+            confirmationDialog.text = "Вышла новая версия Vulpurr: сборка " + version + ", у тебя " + vulpurrUpdater.currentVersion + ".\n"
+                + (notes ? "\n" + notes + "\n" : "")
+                + "\nКошелёк и нода перезапустятся, это около минуты. Обновить сейчас?";
+            confirmationDialog.okText = "Обновить";
+            confirmationDialog.cancelText = "Позже";
+            confirmationDialog.onAcceptedCallback = applyVulpurrUpdate;
+            confirmationDialog.onRejectedCallback = function() { vulpurrDismissedVersion = version; };
+            confirmationDialog.open();
+        }
+    }
+
     Timer {
         id: updatesTimer
-        interval: 3600 * 1000
+        interval: 30 * 60 * 1000
         repeat: true
         running: !disableCheckUpdatesFlag && persistentSettings.checkForUpdates
         triggeredOnStart: true
-        onTriggered: checkUpdates()
+        onTriggered: vulpurrUpdater.checkAsync()
     }
 
     function releaseFocus() {
@@ -2416,11 +2447,11 @@ ApplicationWindow {
     function getDefaultDaemonRpcPort(networkType) {
         switch (parseInt(networkType)) {
             case NetworkType.STAGENET:
-                return 38081;
+                return 27281;
             case NetworkType.TESTNET:
-                return 28081;
+                return 27181;
             default:
-                return 18081;
+                return 27081;
         }
     }
 

@@ -74,7 +74,7 @@ Rectangle {
 
         MoneroComponents.TextPlain {
             id: soloMainLabel
-            text: qsTr("Mining with your computer helps strengthen the Monero network. The more people mine, the harder it is for the network to be attacked, and every little bit helps.\n\nMining also gives you a small chance to earn some Monero. Your computer will create hashes looking for block solutions. If you find a block, you will get the associated reward. Good luck!") + "\n\n" + qsTr("P2Pool mining is a decentralized way to pool mine that pays out more frequently compared to solo mining, while also supporting the network.") + translationManager.emptyString
+            text: qsTr("Mining with your computer helps strengthen the Vulpurr network. The more people mine, the harder it is for the network to be attacked, and every little bit helps.\n\nMining also gives you a small chance to earn some Vulpurr. Your computer will create hashes looking for block solutions. If you find a block, you will get the associated reward. Good luck!") + "\n\n" + qsTr("P2Pool mining is a decentralized way to pool mine that pays out more frequently compared to solo mining, while also supporting the network.") + translationManager.emptyString
             wrapMode: Text.Wrap
             Layout.fillWidth: true
             font.family: MoneroComponents.Style.fontRegular.name
@@ -387,6 +387,7 @@ Rectangle {
             }
 
             ColumnLayout {
+                visible: false  // Vulpurr has a single P2Pool chain; mini/nano do not exist
                 Layout.fillWidth: true
                 Layout.alignment : Qt.AlignTop | Qt.AlignLeft
 
@@ -419,6 +420,7 @@ Rectangle {
             }
 
             ColumnLayout {
+                visible: false  // see chainLabel
                 Layout.topMargin: 5
                 spacing: 10
 
@@ -450,8 +452,8 @@ Rectangle {
                     Usage:<br>
                         --wallet              Wallet address to mine to. Subaddresses and integrated addresses are not supported!<br>
                         --host                IP address of your Monero node, default is 127.0.0.1<br>
-                        --rpc-port            monerod RPC API port number, default is 18081<br>
-                        --zmq-port            monerod ZMQ pub port number, default is 18083 (same port as in monerod\'s \"--zmq-pub\" command line parameter)<br>
+                        --rpc-port            monerod RPC API port number, default is 27081<br>
+                        --zmq-port            monerod ZMQ pub port number, default is 27083 (same port as in monerod\'s \"--zmq-pub\" command line parameter)<br>
                         --stratum             Comma-separated list of IP:port for stratum server to listen on<br>
                         --p2p                 Comma-separated list of IP:port for p2p server to listen on<br>
                         --addpeers            Comma-separated list of IP:port of other p2pool nodes to connect to<br>
@@ -605,11 +607,11 @@ Rectangle {
         var noSync = false;
         //these args will be deleted because DaemonManager::start will re-add them later.
         //--no-zmq must be deleted. removing '--zmq-pub=tcp...' lets us blindly add '--zmq-pub tcp...' later without risking duplication.
-        var defaultArgs = ["--detach","--data-dir","--bootstrap-daemon-address","--prune-blockchain","--no-sync","--check-updates","--non-interactive","--max-concurrency","--no-zmq","--zmq-pub=tcp://127.0.0.1:18083"]
+        var defaultArgs = ["--detach","--data-dir","--bootstrap-daemon-address","--prune-blockchain","--no-sync","--check-updates","--non-interactive","--max-concurrency","--no-zmq","--zmq-pub=tcp://127.0.0.1:27083"]
         var customDaemonArgsArray = args.split(' ');
         var flag = "";
         var allArgs = [];
-        var p2poolArgs = ["--zmq-pub tcp://127.0.0.1:18083"];
+        var p2poolArgs = ["--zmq-pub tcp://127.0.0.1:27083"];
         //create an array (allArgs) of ['--arg value','--arg2','--arg3']
         for (let i = 0; i < customDaemonArgsArray.length; i++) {
             if(!customDaemonArgsArray[i].startsWith("--")) {

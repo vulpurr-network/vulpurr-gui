@@ -93,11 +93,11 @@ QString getAccountName(){
 QString xdgMime(){
     return QString(
         "[Desktop Entry]\n"
-        "Name=Monero GUI\n"
-        "GenericName=Monero-GUI\n"
-        "X-GNOME-FullName=Monero-GUI\n"
-        "Comment=Monero GUI\n"
-        "Keywords=Monero;\n"
+        "Name=Vulpurr Wallet\n"
+        "GenericName=Vulpurr Wallet\n"
+        "X-GNOME-FullName=Vulpurr Wallet\n"
+        "Comment=Vulpurr Wallet\n"
+        "Keywords=Vulpurr;VUP;\n"
         "Exec=\"%1\" %u\n"
         "Terminal=false\n"
         "Type=Application\n"

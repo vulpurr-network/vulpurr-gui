@@ -69,8 +69,8 @@
     </message>
     <message>
         <location filename="../pages/AddressBook.qml" line="93"/>
-        <source>This makes it easier to send or receive Monero and reduces errors when typing in addresses manually.</source>
-        <translation>Это облегчит отправку и получение Monero и снизит количество ошибок при ручном вводе адресов.</translation>
+        <source>This makes it easier to send or receive Vulpurr and reduces errors when typing in addresses manually.</source>
+        <translation>Это облегчит отправку и получение Vulpurr и снизит количество ошибок при ручном вводе адресов.</translation>
     </message>
     <message>
         <location filename="../pages/AddressBook.qml" line="102"/>
@@ -634,13 +634,13 @@ It is recommended to enter passphrase on the hardware wallet for better security
     </message>
     <message>
         <location filename="../pages/Keys.qml" line="62"/>
-        <source>WARNING: Do not reuse your Monero keys on another fork, UNLESS this fork has key reuse mitigations built in. Doing so will harm your privacy.</source>
-        <translation>ВНИМАНИЕ! Не используйте ваши ключи Monero на другом форке, особенно, ЕСЛИ форк не имеет средств защиты от повторного использования ключей. Это может нанести ущерб вашей конфиденциальности.</translation>
+        <source>WARNING: Do not reuse your Vulpurr keys on another fork, UNLESS this fork has key reuse mitigations built in. Doing so will harm your privacy.</source>
+        <translation>ВНИМАНИЕ! Не используйте ваши ключи Vulpurr на другом форке, особенно, ЕСЛИ форк не имеет средств защиты от повторного использования ключей. Это может нанести ущерб вашей конфиденциальности.</translation>
     </message>
     <message>
         <location filename="../pages/Keys.qml" line="85"/>
-        <source>WARNING: Copying your seed to clipboard can expose you to malicious software, which may record your seed and steal your Monero. Please write down your seed manually.</source>
-        <translation>ВНИМАНИЕ: Копирование вашей мнемонической фразы в буфер обмена может сопровождаться перехватом этих данных различным вредоносным программным обеспечением, которое отправит вашу мнемонику злоумышленнику, после чего ваши Monero могут быть украдены. Пожалуйста, вводите вашу мнемоническую фразу вручную с клавиатуры.</translation>
+        <source>WARNING: Copying your seed to clipboard can expose you to malicious software, which may record your seed and steal your Vulpurr. Please write down your seed manually.</source>
+        <translation>ВНИМАНИЕ: Копирование вашей мнемонической фразы в буфер обмена может сопровождаться перехватом этих данных различным вредоносным программным обеспечением, которое отправит вашу мнемонику злоумышленнику, после чего ваши Vulpurr могут быть украдены. Пожалуйста, вводите вашу мнемоническую фразу вручную с клавиатуры.</translation>
     </message>
     <message>
         <location filename="../pages/Keys.qml" line="106"/>
@@ -1065,12 +1065,12 @@ It is recommended to enter passphrase on the hardware wallet for better security
     </message>
     <message>
         <location filename="../pages/Mining.qml" line="76"/>
-        <source>Mining with your computer helps strengthen the Monero network. The more people mine, the harder it is for the network to be attacked, and every little bit helps.
+        <source>Mining with your computer helps strengthen the Vulpurr network. The more people mine, the harder it is for the network to be attacked, and every little bit helps.
 
-Mining also gives you a small chance to earn some Monero. Your computer will create hashes looking for block solutions. If you find a block, you will get the associated reward. Good luck!</source>
-        <translation>Майнинг на вашем компьютере помогает укрепить сеть Monero. Чем больше людей занимаются майнингом, тем сложнее атаковать сеть.
+Mining also gives you a small chance to earn some Vulpurr. Your computer will create hashes looking for block solutions. If you find a block, you will get the associated reward. Good luck!</source>
+        <translation>Майнинг на вашем компьютере помогает укрепить сеть Vulpurr. Чем больше людей занимаются майнингом, тем сложнее атаковать сеть.
 
-Также майнинг дает вам потенциальный шанс заработать немного Monero. Ваш компьютер будет создавать хэши в попытках найти блок. Если вы найдете блок в процессе майнинга, вы получите соответствующую награду. Удачи!</translation>
+Также майнинг дает вам потенциальный шанс заработать немного Vulpurr. Ваш компьютер будет создавать хэши в попытках найти блок. Если вы найдете блок в процессе майнинга, вы получите соответствующую награду. Удачи!</translation>
     </message>
     <message>
         <location filename="../pages/Mining.qml" line="76"/>
@@ -1720,8 +1720,8 @@ Mining also gives you a small chance to earn some Monero. Your computer will cre
     </message>
     <message>
         <location filename="../pages/settings/SettingsInfo.qml" line="102"/>
-        <source>Embedded Monero version: </source>
-        <translation>Встроенная версия Monero: </translation>
+        <source>Embedded Vulpurr version: </source>
+        <translation>Встроенная версия Vulpurr: </translation>
     </message>
     <message>
         <location filename="../pages/settings/SettingsInfo.qml" line="132"/>
@@ -1831,13 +1831,13 @@ The old wallet cache file will be renamed and can be restored later.
     </message>
     <message>
         <location filename="../pages/settings/SettingsInfo.qml" line="410"/>
-        <source>Donate to Monero</source>
-        <translation>Пожертвовать Monero</translation>
+        <source>Donate to Vulpurr</source>
+        <translation>Пожертвовать Vulpurr</translation>
     </message>
     <message>
         <location filename="../pages/settings/SettingsInfo.qml" line="412"/>
-        <source>Donation to Monero Core Team</source>
-        <translation>Пожертвование Основной команде Monero</translation>
+        <source>Donation to Vulpurr Core Team</source>
+        <translation>Пожертвование Основной команде Vulpurr</translation>
     </message>
 </context>
 <context>
@@ -2015,13 +2015,13 @@ The old wallet cache file will be renamed and can be restored later.
     </message>
     <message>
         <location filename="../pages/settings/SettingsNode.qml" line="224"/>
-        <source>Uses a third-party server to connect to the Monero network. Less secure, but easier on your computer.</source>
-        <translation>Использовать сторонний узел для подключения к сети Monero. Менее безопасно, но более быстро и удобно.</translation>
+        <source>Uses a third-party server to connect to the Vulpurr network. Less secure, but easier on your computer.</source>
+        <translation>Использовать сторонний узел для подключения к сети Vulpurr. Менее безопасно, но более быстро и удобно.</translation>
     </message>
     <message>
         <location filename="../pages/settings/SettingsNode.qml" line="253"/>
-        <source>To find a remote node, type &apos;Monero remote node&apos; into your favorite search engine. Please ensure the node is run by a trusted third-party.</source>
-        <translation>Чтобы получить список удаленных узлов, введите &apos;Monero remote node&apos; в вашем любимом поисковике. Пожалуйста, убедитесь, что выбранному узлу можно доверять.</translation>
+        <source>To find a remote node, type &apos;Vulpurr remote node&apos; into your favorite search engine. Please ensure the node is run by a trusted third-party.</source>
+        <translation>Чтобы получить список удаленных узлов, введите &apos;Vulpurr remote node&apos; в вашем любимом поисковике. Пожалуйста, убедитесь, что выбранному узлу можно доверять.</translation>
     </message>
     <message>
         <location filename="../pages/settings/SettingsNode.qml" line="317"/>
@@ -2205,8 +2205,8 @@ You can change the password in the wallet settings.</source>
     </message>
     <message>
         <location filename="../pages/settings/SettingsWallet.qml" line="177"/>
-        <source>Receive Monero for your business, easily.</source>
-        <translation>Получайте Monero для вашего бизнеса, легко.</translation>
+        <source>Receive Vulpurr for your business, easily.</source>
+        <translation>Получайте Vulpurr для вашего бизнеса, легко.</translation>
     </message>
     <message>
         <location filename="../pages/settings/SettingsWallet.qml" line="178"/>
@@ -2233,8 +2233,8 @@ You can change the password in the wallet settings.</source>
     </message>
     <message>
         <location filename="../pages/SharedRingDB.qml" line="103"/>
-        <source>This page allows you to interact with the shared ring database. This database is meant for use by Monero wallets as well as wallets from Monero clones which reuse the Monero keys.</source>
-        <translation>На этой странице можно взаимодействовать с общей базой данных RingDB. Эта база данных предназначается для использования кошельками Monero или их клонов, которые смогут повторно использовать ключи Monero.</translation>
+        <source>This page allows you to interact with the shared ring database. This database is meant for use by Vulpurr wallets as well as wallets from Vulpurr clones which reuse the Vulpurr keys.</source>
+        <translation>На этой странице можно взаимодействовать с общей базой данных RingDB. Эта база данных предназначается для использования кошельками Vulpurr или их клонов, которые смогут повторно использовать ключи Vulpurr.</translation>
     </message>
     <message>
         <location filename="../pages/SharedRingDB.qml" line="115"/>
@@ -2243,8 +2243,8 @@ You can change the password in the wallet settings.</source>
     </message>
     <message>
         <location filename="../pages/SharedRingDB.qml" line="116"/>
-        <source>In order to obscure which inputs in a Monero transaction are being spent, a third party should not be able to tell which inputs in a ring are already known to be spent. Being able to do so would weaken the protection afforded by ring signatures. If all but one of the inputs are known to be already spent, then the input being actually spent becomes apparent, thereby nullifying the effect of ring signatures, one of the three main layers of privacy protection Monero uses.&lt;br&gt;To help transactions avoid those inputs, a list of known spent ones can be used to avoid using them in new transactions. Such a list is maintained by the Monero project and is available on the getmonero.org website, and you can import this list here.&lt;br&gt;Alternatively, you can scan the blockchain (and the blockchain of key-reusing Monero clones) yourself using the monero-blockchain-mark-spent-outputs tool to create a list of known spent outputs.&lt;br&gt;</source>
-        <translation>Для того чтобы скрыть какие входы в транзакциях Monero потрачены, третья сторона не должна сообщать какие входы в кольце уже задействованы в трате. Ведь если это сделать, то это ослабит защиту, обеспечиваемую кольцевыми подписями. Если известно, что все, кроме одного из входов, уже потрачены, то фактически трата входа становится очевидной, тем самым аннулируется эффект кольцевых подписей, одного из трех основных уровней защиты конфиденциальности Monero.&lt;br&gt;Чтобы помочь транзакциям избежать траты этих входов, можно использовать список известных израсходованных выходов, чтобы избежать их использования в новых транзакциях. Такой список поддерживается проектом Monero и доступен на веб-сайте getmonero.org, и вы можете импортировать этот список здесь.&lt;br&gt;Кроме того, вы можете просканировать блокчейн Monero (и его клонов) самостоятельно, используя инструмент monero-blockchain-mark-spent-outputs, чтобы создать список известных потраченых выходов.&lt;br&gt;</translation>
+        <source>In order to obscure which inputs in a Vulpurr transaction are being spent, a third party should not be able to tell which inputs in a ring are already known to be spent. Being able to do so would weaken the protection afforded by ring signatures. If all but one of the inputs are known to be already spent, then the input being actually spent becomes apparent, thereby nullifying the effect of ring signatures, one of the three main layers of privacy protection Vulpurr uses.&lt;br&gt;To help transactions avoid those inputs, a list of known spent ones can be used to avoid using them in new transactions. Such a list is maintained by the Vulpurr project and is available on the getmonero.org website, and you can import this list here.&lt;br&gt;Alternatively, you can scan the blockchain (and the blockchain of key-reusing Vulpurr clones) yourself using the monero-blockchain-mark-spent-outputs tool to create a list of known spent outputs.&lt;br&gt;</source>
+        <translation>Для того чтобы скрыть какие входы в транзакциях Vulpurr потрачены, третья сторона не должна сообщать какие входы в кольце уже задействованы в трате. Ведь если это сделать, то это ослабит защиту, обеспечиваемую кольцевыми подписями. Если известно, что все, кроме одного из входов, уже потрачены, то фактически трата входа становится очевидной, тем самым аннулируется эффект кольцевых подписей, одного из трех основных уровней защиты конфиденциальности Vulpurr.&lt;br&gt;Чтобы помочь транзакциям избежать траты этих входов, можно использовать список известных израсходованных выходов, чтобы избежать их использования в новых транзакциях. Такой список поддерживается проектом Vulpurr и доступен на веб-сайте getmonero.org, и вы можете импортировать этот список здесь.&lt;br&gt;Кроме того, вы можете просканировать блокчейн Vulpurr (и его клонов) самостоятельно, используя инструмент monero-blockchain-mark-spent-outputs, чтобы создать список известных потраченых выходов.&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../pages/SharedRingDB.qml" line="134"/>
@@ -2313,13 +2313,13 @@ You can change the password in the wallet settings.</source>
     </message>
     <message>
         <location filename="../pages/SharedRingDB.qml" line="247"/>
-        <source>In order to avoid nullifying the protection afforded by Monero&apos;s ring signatures, an output should not be spent with different rings on different blockchains. While this is normally not a concern, it can become one when a key-reusing Monero clone allows you to spend existing outputs. In this case, you need to ensure this existing outputs uses the same ring on both chains.&lt;br&gt;This will be done automatically by Monero and any key-reusing software which is not trying to actively strip you of your privacy.&lt;br&gt;If you are using a key-reusing Monero clone too, and this clone does not include this protection, you can still ensure your transactions are protected by spending on the clone first, then manually adding the ring on this page, which allows you to then spend your Monero safely.&lt;br&gt;If you do not use a key-reusing Monero clone without these safety features, then you do not need to do anything as it is all automated.&lt;br&gt;</source>
-        <translation>Чтобы избежать аннулирования защиты, предоставляемой кольцевыми подписями Monero, выход не должен быть потраченным с другими значениями размера кольца и на других блокчейнах. Хотя, как правило, это не является проблемой, в некоторых случаях повторное использование ключей Monero позволяет потратить существующие выходы. В таких случаях вам необходимо позаботиться, чтобы эти существующие выходы использовали одно и то же кольцо в обеих блокчейнах.&lt;br&gt;Это может быть сделано автоматически с помощью любого программного обеспечения для повторного использования ключей от Monero-клонов, и даже если эти клоны не предоставляют подобную защиту, вы все еще можете проверить, что ваши транзакции защищены, путем ручного введения размера кольца на этой странице, которая позволит вам потратить ваши Monero безопасно.&lt;br&gt;Если вы не используете программное обеспечения от Monero-клонов, вам ничего не нужно делать, так как все будет сделано автоматически.&lt;br&gt;</translation>
+        <source>In order to avoid nullifying the protection afforded by Vulpurr&apos;s ring signatures, an output should not be spent with different rings on different blockchains. While this is normally not a concern, it can become one when a key-reusing Vulpurr clone allows you to spend existing outputs. In this case, you need to ensure this existing outputs uses the same ring on both chains.&lt;br&gt;This will be done automatically by Vulpurr and any key-reusing software which is not trying to actively strip you of your privacy.&lt;br&gt;If you are using a key-reusing Vulpurr clone too, and this clone does not include this protection, you can still ensure your transactions are protected by spending on the clone first, then manually adding the ring on this page, which allows you to then spend your Vulpurr safely.&lt;br&gt;If you do not use a key-reusing Vulpurr clone without these safety features, then you do not need to do anything as it is all automated.&lt;br&gt;</source>
+        <translation>Чтобы избежать аннулирования защиты, предоставляемой кольцевыми подписями Vulpurr, выход не должен быть потраченным с другими значениями размера кольца и на других блокчейнах. Хотя, как правило, это не является проблемой, в некоторых случаях повторное использование ключей Vulpurr позволяет потратить существующие выходы. В таких случаях вам необходимо позаботиться, чтобы эти существующие выходы использовали одно и то же кольцо в обеих блокчейнах.&lt;br&gt;Это может быть сделано автоматически с помощью любого программного обеспечения для повторного использования ключей от Vulpurr-клонов, и даже если эти клоны не предоставляют подобную защиту, вы все еще можете проверить, что ваши транзакции защищены, путем ручного введения размера кольца на этой странице, которая позволит вам потратить ваши Vulpurr безопасно.&lt;br&gt;Если вы не используете программное обеспечения от Vulpurr-клонов, вам ничего не нужно делать, так как все будет сделано автоматически.&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../pages/SharedRingDB.qml" line="266"/>
-        <source>This records rings used by outputs spent on Monero on a key reusing chain, so that the same ring may be reused to avoid privacy issues.</source>
-        <translation>Здесь записываются кольца, используемые выходами, проводимыми на Monero, в цепочке повторного использования ключей, так что одно и то же кольцо можно использовать повторно, чтобы избежать проблем с конфиденциальностью.</translation>
+        <source>This records rings used by outputs spent on Vulpurr on a key reusing chain, so that the same ring may be reused to avoid privacy issues.</source>
+        <translation>Здесь записываются кольца, используемые выходами, проводимыми на Vulpurr, в цепочке повторного использования ключей, так что одно и то же кольцо можно использовать повторно, чтобы избежать проблем с конфиденциальностью.</translation>
     </message>
     <message>
         <location filename="../pages/SharedRingDB.qml" line="277"/>
@@ -2503,8 +2503,8 @@ You can change the password in the wallet settings.</source>
     </message>
     <message>
         <location filename="../pages/Sign.qml" line="341"/>
-        <source>Enter the Monero Address (example: 44AFFq5kSiGBoZ...)</source>
-        <translation>Введите адрес Monero (например: 44AFFq5kSiGBoZ...)</translation>
+        <source>Enter the Vulpurr Address (example: 44AFFq5kSiGBoZ...)</source>
+        <translation>Введите адрес Vulpurr (например: 44AFFq5kSiGBoZ...)</translation>
     </message>
     <message>
         <location filename="../pages/Sign.qml" line="351"/>
@@ -2751,8 +2751,8 @@ Confirmation message:
     </message>
     <message>
         <location filename="../pages/Transfer.qml" line="1071"/>
-        <source>Monero sent successfully</source>
-        <translation>Monero успешно отправлены</translation>
+        <source>Vulpurr sent successfully</source>
+        <translation>Vulpurr успешно отправлены</translation>
     </message>
     <message>
         <location filename="../pages/Transfer.qml" line="1194"/>
@@ -2807,8 +2807,8 @@ Please upgrade or connect to another daemon</source>
     </message>
     <message>
         <location filename="../pages/Transfer.qml" line="169"/>
-        <source>Spendable funds: %1 XMR. Please wait ~%2 minutes for your whole balance to become spendable.</source>
-        <translation>Отправляемая сумма: %1 XMR. Пожалуйста, подождите ~%2 минут чтобы весь ваш баланс стал доступен для отправки.</translation>
+        <source>Spendable funds: %1 VUP. Please wait ~%2 minutes for your whole balance to become spendable.</source>
+        <translation>Отправляемая сумма: %1 VUP. Пожалуйста, подождите ~%2 минут чтобы весь ваш баланс стал доступен для отправки.</translation>
     </message>
     <message>
         <location filename="../pages/Transfer.qml" line="690"/>
@@ -2914,8 +2914,8 @@ Please upgrade or connect to another daemon</source>
     </message>
     <message>
         <location filename="../pages/Transfer.qml" line="985"/>
-        <source>Spend XMR from a cold (offline) wallet</source>
-        <translation>Потратить XMR из холодного (оффлайн) кошелька</translation>
+        <source>Spend VUP from a cold (offline) wallet</source>
+        <translation>Потратить VUP из холодного (оффлайн) кошелька</translation>
     </message>
     <message>
         <location filename="../pages/Transfer.qml" line="983"/>
@@ -3113,8 +3113,8 @@ Please upgrade or connect to another daemon</source>
     </message>
     <message>
         <location filename="../components/TxConfirmationDialog.qml" line="311"/>
-        <source>Monero address</source>
-        <translation>Адрес Monero</translation>
+        <source>Vulpurr address</source>
+        <translation>Адрес Vulpurr</translation>
     </message>
     <message>
         <location filename="../components/TxConfirmationDialog.qml" line="332"/>
@@ -3200,8 +3200,8 @@ For reserve proofs you don&apos;t need to specify tx id or address.</source>
     </message>
     <message>
         <location filename="../pages/TxKey.qml" line="109"/>
-        <source>Paste amount of XMR (reserve proof only)</source>
-        <translation>Сумма XMR (только для зарезервированных доказательств)</translation>
+        <source>Paste amount of VUP (reserve proof only)</source>
+        <translation>Сумма VUP (только для зарезервированных доказательств)</translation>
     </message>
     <message>
         <location filename="../pages/TxKey.qml" line="138"/>
@@ -3267,13 +3267,13 @@ For the case with Spend Proof, you don&apos;t need to specify the recipient addr
     <name>UpdateDialog</name>
     <message>
         <location filename="../components/UpdateDialog.qml" line="77"/>
-        <source>New Monero version v%1 is available.</source>
-        <translation>Доступна новая версия Monero v%1.</translation>
+        <source>New Vulpurr version v%1 is available.</source>
+        <translation>Доступна новая версия Vulpurr v%1.</translation>
     </message>
     <message>
         <location filename="../components/UpdateDialog.qml" line="98"/>
-        <source>Please visit getmonero.org for details</source>
-        <translation>Пожалуйста, посетите getmonero.org для получения дополнительной информации</translation>
+        <source>Please visit vulpurr.com for details</source>
+        <translation>Пожалуйста, посетите vulpurr.com для получения дополнительной информации</translation>
     </message>
     <message>
         <location filename="../components/UpdateDialog.qml" line="102"/>
@@ -3653,8 +3653,8 @@ your input may be required.</source>
     </message>
     <message>
         <location filename="../wizard/WizardCreateWallet3.qml" line="60"/>
-        <source>To be able to communicate with the Monero network your wallet needs to be connected to a Monero node. For best privacy it&apos;s recommended to run your own node.</source>
-        <translation>Чтобы обмениваться данными с сетью Monero, ваш кошелек должен быть подключен к узлу Monero. Для лучшей конфиденциальности рекомендуется запустить свой собственный узел.</translation>
+        <source>To be able to communicate with the Vulpurr network your wallet needs to be connected to a Vulpurr node. For best privacy it&apos;s recommended to run your own node.</source>
+        <translation>Чтобы обмениваться данными с сетью Vulpurr, ваш кошелек должен быть подключен к узлу Vulpurr. Для лучшей конфиденциальности рекомендуется запустить свой собственный узел.</translation>
     </message>
 </context>
 <context>
@@ -3714,8 +3714,8 @@ your input may be required.</source>
     </message>
     <message>
         <location filename="../wizard/WizardDaemonSettings.qml" line="152"/>
-        <source>Additionally, you may specify a bootstrap node to use Monero immediately.</source>
-        <translation>Кроме того, вы можете указать узел начальной загрузки, чтобы немедленно начать использование Monero.</translation>
+        <source>Additionally, you may specify a bootstrap node to use Vulpurr immediately.</source>
+        <translation>Кроме того, вы можете указать узел начальной загрузки, чтобы немедленно начать использование Vulpurr.</translation>
     </message>
     <message>
         <location filename="../wizard/WizardDaemonSettings.qml" line="192"/>
@@ -3727,8 +3727,8 @@ your input may be required.</source>
     <name>WizardHome</name>
     <message>
         <location filename="../wizard/WizardHome.qml" line="66"/>
-        <source>Welcome to Monero</source>
-        <translation>Добро пожаловать в Monero</translation>
+        <source>Welcome to Vulpurr</source>
+        <translation>Добро пожаловать в Vulpurr</translation>
     </message>
     <message>
         <location filename="../wizard/WizardHome.qml" line="78"/>
@@ -3749,8 +3749,8 @@ your input may be required.</source>
     </message>
     <message>
         <location filename="../wizard/WizardHome.qml" line="82"/>
-        <source>Choose this option if this is your first time using Monero.</source>
-        <translation>Выберете эту опцию, если вы впервые пользуетесь Monero.</translation>
+        <source>Choose this option if this is your first time using Vulpurr.</source>
+        <translation>Выберете эту опцию, если вы впервые пользуетесь Vulpurr.</translation>
     </message>
     <message>
         <location filename="../wizard/WizardHome.qml" line="104"/>
@@ -3759,8 +3759,8 @@ your input may be required.</source>
     </message>
     <message>
         <location filename="../wizard/WizardHome.qml" line="108"/>
-        <source>Connect your hardware wallet to create a new Monero wallet.</source>
-        <translation>Создать новый кошелек, подключившись к вашему аппаратному кошельку Monero.</translation>
+        <source>Connect your hardware wallet to create a new Vulpurr wallet.</source>
+        <translation>Создать новый кошелек, подключившись к вашему аппаратному кошельку Vulpurr.</translation>
     </message>
     <message>
         <location filename="../wizard/WizardHome.qml" line="127"/>
@@ -3821,12 +3821,12 @@ your input may be required.</source>
     <message>
         <location filename="../wizard/WizardModeBootstrap.qml" line="72"/>
         <source>This mode will use a remote node whilst also syncing the blockchain. This is different from the first menu option (Simple mode), since it will only use the remote node until the blockchain is fully synced locally. It is a reasonable tradeoff for most people who care about privacy but also want the convenience of an automatic fallback option.</source>
-        <translation>Этот режим будет использовать удаленный узел, но при этом он позволит загрузить локальную копию блокчейна. Это отличается от первого пункта меню (простого режима) тем, что в данном режиме удаленный узел будет использоваться только до тех пор, пока блокчейн не будет полностью загружен локально. Это разумный компромисс для большинства людей, которые заботятся о неприкосновенности своей частной жизни и при этом не хотят терять в удобстве использования Monero, следовательно, эта опция может автоматически считаться запасным вариантом.</translation>
+        <translation>Этот режим будет использовать удаленный узел, но при этом он позволит загрузить локальную копию блокчейна. Это отличается от первого пункта меню (простого режима) тем, что в данном режиме удаленный узел будет использоваться только до тех пор, пока блокчейн не будет полностью загружен локально. Это разумный компромисс для большинства людей, которые заботятся о неприкосновенности своей частной жизни и при этом не хотят терять в удобстве использования Vulpurr, следовательно, эта опция может автоматически считаться запасным вариантом.</translation>
     </message>
     <message>
         <location filename="../wizard/WizardModeBootstrap.qml" line="84"/>
-        <source>Temporary use of remote nodes is useful in order to use Monero immediately (hence the name bootstrap), however be aware that when using remote nodes (including with the bootstrap setting), nodes could track your IP address, track your &quot;restore height&quot; and associated block request data, and send you inaccurate information to learn more about transactions you make.</source>
-        <translation>Временное использование удаленных узлов полезно для быстрого начала работы с Monero (отсюда и название - узлы начальной загрузки), однако помните, что при использовании удаленных узлов (включая процесс настройки узла начальной загрузки) они могут отслеживать ваш IP адрес, отслеживать вашу &quot;высоту восстановления&quot; и соответствующие данные о блоках, а также отправлять вам неточную информацию, чтобы узнать больше о совершаемых вами транзакциях.</translation>
+        <source>Temporary use of remote nodes is useful in order to use Vulpurr immediately (hence the name bootstrap), however be aware that when using remote nodes (including with the bootstrap setting), nodes could track your IP address, track your &quot;restore height&quot; and associated block request data, and send you inaccurate information to learn more about transactions you make.</source>
+        <translation>Временное использование удаленных узлов полезно для быстрого начала работы с Vulpurr (отсюда и название - узлы начальной загрузки), однако помните, что при использовании удаленных узлов (включая процесс настройки узла начальной загрузки) они могут отслеживать ваш IP адрес, отслеживать вашу &quot;высоту восстановления&quot; и соответствующие данные о блоках, а также отправлять вам неточную информацию, чтобы узнать больше о совершаемых вами транзакциях.</translation>
     </message>
     <message>
         <location filename="../wizard/WizardModeBootstrap.qml" line="97"/>
@@ -3848,8 +3848,8 @@ your input may be required.</source>
     </message>
     <message>
         <location filename="../wizard/WizardModeRemoteNodeWarning.qml" line="72"/>
-        <source>This mode is ideal for managing small amounts of Monero. You have access to basic features for making and managing transactions. It will automatically connect to the Monero network so you can start using Monero immediately.</source>
-        <translation>Этот режим идеально подходит для работы с небольшими суммами Monero. У вас есть доступ ко всем основным функциям для совершения транзакций и управления ими. Программа автоматически подключится к сети Monero, чтобы вы немедленно могли начать использование Monero.</translation>
+        <source>This mode is ideal for managing small amounts of Vulpurr. You have access to basic features for making and managing transactions. It will automatically connect to the Vulpurr network so you can start using Vulpurr immediately.</source>
+        <translation>Этот режим идеально подходит для работы с небольшими суммами Vulpurr. У вас есть доступ ко всем основным функциям для совершения транзакций и управления ими. Программа автоматически подключится к сети Vulpurr, чтобы вы немедленно могли начать использование Vulpurr.</translation>
     </message>
     <message>
         <location filename="../wizard/WizardModeRemoteNodeWarning.qml" line="85"/>
@@ -3939,8 +3939,8 @@ your input may be required.</source>
     </message>
     <message>
         <location filename="../wizard/WizardModeSelection.qml" line="166"/>
-        <source>Create portable wallets and use them on any PC. Enable if you installed Monero on a USB stick, an external drive, or any other portable storage medium.</source>
-        <translation>Создавайте портативный кошелек и используйте его на любом ПК. Включите данный функционал, если вы установили Monero на USB-накопитель, внешний диск или любой другой портативный носитель.</translation>
+        <source>Create portable wallets and use them on any PC. Enable if you installed Vulpurr on a USB stick, an external drive, or any other portable storage medium.</source>
+        <translation>Создавайте портативный кошелек и используйте его на любом ПК. Включите данный функционал, если вы установили Vulpurr на USB-накопитель, внешний диск или любой другой портативный носитель.</translation>
     </message>
     <message>
         <location filename="../wizard/WizardModeSelection.qml" line="175"/>
@@ -4111,10 +4111,10 @@ your input may be required.</source>
     </message>
     <message>
         <location filename="../wizard/WizardRestoreWallet3.qml" line="63"/>
-        <source>To be able to communicate with the Monero network your wallet needs to be connected to a Monero node. For best privacy it&apos;s recommended to run your own node.
+        <source>To be able to communicate with the Vulpurr network your wallet needs to be connected to a Vulpurr node. For best privacy it&apos;s recommended to run your own node.
 
 If you don&apos;t have the option to run your own node, there&apos;s an option to connect to a remote node.</source>
-        <translation>Чтобы обмениваться данными с сетью Monero, ваш кошелек должен быть подключен к узлу Monero. Для лучшей конфиденциальности рекомендуется запустить свой собственный узел.
+        <translation>Чтобы обмениваться данными с сетью Vulpurr, ваш кошелек должен быть подключен к узлу Vulpurr. Для лучшей конфиденциальности рекомендуется запустить свой собственный узел.
 
 Если у вас нет возможности запустить собственный узел, то у вас всегда есть вариант с подключением к удаленному узлу.</translation>
     </message>
@@ -4413,7 +4413,7 @@ If you don&apos;t have the option to run your own node, there&apos;s an option t
     <message>
         <location filename="../main.qml" line="1055"/>
         <source>This address received %1 monero, with %2 confirmation(s).</source>
-        <translation>Этот адрес получил %1 XMR, с %2 подтверждениями.</translation>
+        <translation>Этот адрес получил %1 VUP, с %2 подтверждениями.</translation>
     </message>
     <message>
         <location filename="../main.qml" line="1066"/>
@@ -4427,8 +4427,8 @@ If you don&apos;t have the option to run your own node, there&apos;s an option t
     </message>
     <message>
         <location filename="../main.qml" line="1345"/>
-        <source>Would you like to register Monero GUI Desktop entry?</source>
-        <translation>Вы бы хотели, чтобы записи Monero GUI производились на рабочий стол?</translation>
+        <source>Would you like to register Vulpurr GUI Desktop entry?</source>
+        <translation>Вы бы хотели, чтобы записи Vulpurr GUI производились на рабочий стол?</translation>
     </message>
     <message>
         <location filename="../main.qml" line="1347"/>
@@ -4505,7 +4505,7 @@ If you don&apos;t have the option to run your own node, there&apos;s an option t
     <message>
         <location filename="../main.qml" line="1052"/>
         <source>This address received %1 monero, but the transaction is not yet mined</source>
-        <translation>Этот адрес получил %1 XMR, но транзакция все еще не подтверждена майнерами</translation>
+        <translation>Этот адрес получил %1 VUP, но транзакция все еще не подтверждена майнерами</translation>
     </message>
     <message>
         <location filename="../main.qml" line="836"/>

@@ -267,9 +267,8 @@ bool Wallet::init(const QString &daemonAddress, const QString &daemonUsername, c
         qDebug() << "RESTORING FROM DEVICE";
         m_walletImpl->setRecoveringFromDevice(true);
     }
-    if (isRecovering || isRecoveringFromDevice) {
-        m_walletImpl->setRefreshFromBlockHeight(restoreHeight);
-    }
+    // Vulpurr: young chain, always scan from genesis
+    m_walletImpl->setRefreshFromBlockHeight(0);
 
     {
         QMutexLocker locker(&m_proxyMutex);

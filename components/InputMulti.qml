@@ -61,7 +61,7 @@ TextArea {
     onTextChanged: {
         if(addressValidation){
             // js replacement for `RegularExpressionValidator { regularExpression: /[0-9A-Fa-f]{95}/g }`
-            if (textArea.text.startsWith("monero:")) {
+            if (textArea.text.startsWith("vulpurr:")) {
                 error = false;
                 return;
             }

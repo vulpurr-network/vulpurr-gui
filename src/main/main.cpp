@@ -61,6 +61,7 @@
 #include "SubaddressAccount.h"
 #include "model/SubaddressAccountModel.h"
 #include "Logger.h"
+#include "VulpurrUpdater.h"
 #include "MainApp.h"
 #include "qt/downloader.h"
 #include "qt/ipc.h"
@@ -187,10 +188,10 @@ int main(int argc, char *argv[])
 
     MainApp app(argc, argv);
 
-    app.setApplicationName("monero-core");
-    app.setDesktopFileName("org.getmonero.Monero");
-    app.setOrganizationDomain("getmonero.org");
-    app.setOrganizationName("monero-project");
+    app.setApplicationName("vulpurr-wallet");
+    app.setDesktopFileName("com.vulpurr.Vulpurr");
+    app.setOrganizationDomain("vulpurr.local");
+    app.setOrganizationName("vulpurr");
 
     // Ask to enable Tails OS persistence mode, it affects:
     // - Log file location
@@ -212,9 +213,9 @@ int main(int argc, char *argv[])
     #endif
 
     if(isTails && TailsOS::usePersistence){
-        moneroAccountsDir = QDir::homePath() + "/Persistent/Monero/wallets";
+        moneroAccountsDir = QDir::homePath() + "/Persistent/Vulpurr/wallets";
     } else if (!moneroAccountsRootDir.empty()) {
-        moneroAccountsDir = moneroAccountsRootDir.at(0) + "/Monero/wallets";
+        moneroAccountsDir = moneroAccountsRootDir.at(0) + "/Vulpurr/wallets";
     } else {
         qCritical() << "Error: accounts root directory could not be set";
         return 1;
@@ -425,6 +426,9 @@ Verify update binary using 'shasum'-compatible (SHA256 algo) output signed by tw
     engine.addImageProvider(QLatin1String("qrcode"), new QRCodeImageProvider());
 
     engine.rootContext()->setContextProperty("logger", &logger);
+
+    VulpurrUpdater vulpurrUpdater;
+    engine.rootContext()->setContextProperty("vulpurrUpdater", &vulpurrUpdater);
 
     engine.rootContext()->setContextProperty("mainApp", &app);
 

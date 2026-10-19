@@ -42,15 +42,15 @@
 #include "qt/TailsOS.h"
 
 // default log path by OS (should be writable)
-static const QString defaultLogName = "monero-wallet-gui.log";
+static const QString defaultLogName = "vulpurr-wallet.log";
 #if defined(Q_OS_IOS)
     //AppDataLocation = "<APPROOT>/Library/Application Support"
     static const QString osPath = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(0);
-    static const QString appFolder = "monero-wallet-gui";
+    static const QString appFolder = "vulpurr-wallet";
 #elif defined(Q_OS_WIN)
     //AppDataLocation = "C:/Users/<USER>/AppData/Roaming/<APPNAME>"
     static const QString osPath = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(0);
-    static const QString appFolder = "monero-wallet-gui";
+    static const QString appFolder = "vulpurr-wallet";
 #elif defined(Q_OS_ANDROID)
     //AppDataLocation = "<USER>/<APPNAME>/files"
     static const QString osPath = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(1);
@@ -81,7 +81,7 @@ const QString getLogPath(const QString &userDefinedLogFilePath, bool portable)
     }
 
     if(TailsOS::detect() && TailsOS::usePersistence)
-        return QDir::homePath() + "/Persistent/Monero/logs/" + defaultLogName;
+        return QDir::homePath() + "/Persistent/Vulpurr/logs/" + defaultLogName;
     else {
         QDir appDir(osPath + "/" + appFolder);
         if(!appDir.exists())

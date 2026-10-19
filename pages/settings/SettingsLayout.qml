@@ -189,6 +189,7 @@ Rectangle {
         readonly property bool fiatRatesConsentNeeded: persistentSettings.fiatPriceCurrency !== "xmrusd" && !persistentSettings.fiatRatesConsentGiven
 
         RowLayout {
+            visible: false  // Vulpurr: no fiat price source for VUP yet
             MoneroComponents.CheckBox {
                 id: enableConvertCurrency
                 text: qsTr("Enable displaying balance in other currencies") + translationManager.emptyString

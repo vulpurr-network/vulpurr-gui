@@ -27,6 +27,7 @@
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "P2PoolManager.h"
+#include "main/VulpurrUpdater.h"
 #include "net/http_client.h"
 #include "common/util.h"
 #include "main/oshelper.h"
@@ -50,74 +51,18 @@
 #endif
 
 void P2PoolManager::download() {
+    // Vulpurr: P2Pool for our network ships with signed updates from vulpurr.com
     m_scheduler.run([this] {
-        QUrl url;
-        QString fileName;
-        QString validHash;
-        #ifdef Q_OS_WIN
-            url = "https://github.com/SChernykh/p2pool/releases/download/v4.18.1/p2pool-v4.18.1-windows-x64.zip";
-            fileName = m_p2poolPath + "/p2pool-v4.18.1-windows-x64.zip";
-            validHash = "257094eb827aca2c08801775028c141e99966c3c640eb42ec094cf540fe588cc";
-        #elif defined(Q_OS_LINUX)
-            url = "https://github.com/SChernykh/p2pool/releases/download/v4.18.1/p2pool-v4.18.1-linux-x64.tar.gz";
-            fileName = m_p2poolPath + "/p2pool-v4.18.1-linux-x64.tar.gz";
-            validHash = "eeab5aca0edf4756cb295c5fda5b2d5344208aecbbdcb2ffd8471dfe14e6c2c5";
-        #elif defined(Q_OS_MACOS_AARCH64)
-            url = "https://github.com/SChernykh/p2pool/releases/download/v4.18.1/p2pool-v4.18.1-macos-aarch64.tar.gz";
-            fileName = m_p2poolPath + "/p2pool-v4.18.1-macos-aarch64.tar.gz";
-            validHash = "033fca6a0292e850c8807b93bc0ac39014d788b93ed4c5ea56ed09c949511c18";
-        #elif defined(Q_OS_MACOS)
-            url = "https://github.com/SChernykh/p2pool/releases/download/v4.18.1/p2pool-v4.18.1-macos-x64.tar.gz";
-            fileName = m_p2poolPath + "/p2pool-v4.18.1-macos-x64.tar.gz";
-            validHash = "bbb9872724aa30305d6b49346a52795d375c1bae2e31e45cf5d3f37fa53342c5";
-        #endif
-        QFile file(fileName);
-        epee::net_utils::http::http_simple_client http_client;
-        const epee::net_utils::http::http_response_info* response = NULL;
-        std::string userAgent = randomUserAgent().toStdString();
-        std::chrono::milliseconds timeout = std::chrono::seconds(10);
-        http_client.set_server(url.host().toStdString(), "443", {});
-        bool success = http_client.invoke_get(url.path().toStdString(), timeout, {}, std::addressof(response), {{"User-Agent", userAgent}});
-        if (success && response->m_response_code == 404) {
-            emit p2poolDownloadFailure(BinaryNotAvailable);
+        QString error;
+        if (!VulpurrUpdater::downloadVerifiedFile(QFileInfo(m_p2pool).fileName(), m_p2pool, error)) {
+            emit p2poolDownloadFailure(error.contains("hash") ? HashVerificationFailed : ConnectionIssue);
             return;
-        } else if (success && response->m_response_code == 302) {
-            epee::net_utils::http::fields_list fields = response->m_header_info.m_etc_fields;
-            for (std::pair<std::string, std::string> i : fields) {
-                if (i.first == "Location") {
-                    url = QString::fromStdString(i.second);
-                    http_client.set_server(url.host().toStdString(), "443", {});
-                    std::string query = url.query(QUrl::FullyEncoded).toStdString();
-                    std::string path = url.path().toStdString() + "?" + query;
-                    http_client.wipe_response();
-                    success = http_client.invoke_get(path, timeout, {}, std::addressof(response), {{"User-Agent", userAgent}});
-                }
-            }
         }
-        if (!success) {
-            emit p2poolDownloadFailure(ConnectionIssue);
+        if (isInstalled()) {
+            emit p2poolDownloadSuccess();
         }
         else {
-            std::string stringData = response->m_body;
-            QByteArray data(stringData.c_str(), stringData.length());
-            QByteArray hashData = QCryptographicHash::hash(data, QCryptographicHash::Sha256);
-            QString hash = hashData.toHex();
-            if (hash != validHash) {
-                emit p2poolDownloadFailure(HashVerificationFailed);
-            }
-            else {
-                file.open(QIODevice::WriteOnly);
-                file.write(data);
-                file.close();
-                QProcess::execute("tar", {"-xzf", fileName, "--strip=1", "-C", m_p2poolPath});
-                QFile::remove(fileName);
-                if (isInstalled()) {
-                    emit p2poolDownloadSuccess();
-                }
-                else {
-                    emit p2poolDownloadFailure(InstallationFailed);
-                }
-            }
+            emit p2poolDownloadFailure(InstallationFailed);
         }
     });
     return;
@@ -184,13 +129,8 @@ bool P2PoolManager::start(const QString &flags, const QString &address, const QS
         arguments << "--start-mining" << threads;
     }
 
-    if (chain == "nano") {
-        arguments << "--nano";
-    }
-
-    if (chain == "mini") {
-        arguments << "--mini";
-    }
+    // Vulpurr: one pool network for everyone; mini/nano would split our small hashrate
+    Q_UNUSED(chain);
 
     if (!arguments.contains("--wallet")) {
         arguments << "--wallet" << address;
@@ -225,9 +165,9 @@ void P2PoolManager::exit()
     qDebug("P2PoolManager: exit()");
     if (started) {
     #ifdef Q_OS_WIN
-        QProcess::execute("taskkill",  {"/F", "/IM", "p2pool.exe"});
+        QProcess::execute("taskkill",  {"/F", "/IM", QFileInfo(m_p2pool).fileName()});
     #else
-        QProcess::execute("pkill", {"p2pool"});
+        QProcess::execute("pkill", {QFileInfo(m_p2pool).fileName()});
     #endif
         started = false;
         QString dirName = m_p2poolPath + "/stats/";
@@ -252,10 +192,10 @@ P2PoolManager::P2PoolManager(QObject *parent)
     if (!QDir(m_p2poolPath).exists()) {
         QDir().mkpath(m_p2poolPath);
     }
-    m_p2pool = m_p2poolPath + "/p2pool.exe";
+    m_p2pool = m_p2poolPath + "/vulpurr-p2pool.exe";
 #elif defined(Q_OS_UNIX)
     m_p2poolPath = QApplication::applicationDirPath();
-    m_p2pool = m_p2poolPath + "/p2pool";
+    m_p2pool = m_p2poolPath + "/vulpurr-p2pool";
 #endif
     if (m_p2pool.length() == 0) {
         qCritical() << "no p2pool binary defined for current platform";

@@ -167,7 +167,7 @@ Rectangle {
                 id: portableModeButton
                 Layout.topMargin: 20
                 headerText: qsTr("Portable mode") + translationManager.emptyString
-                bodyText: qsTr("Create portable wallets and use them on any PC. Enable if you installed Monero on a USB stick, an external drive, or any other portable storage medium.") + translationManager.emptyString
+                bodyText: qsTr("Create portable wallets and use them on any PC. Enable if you installed Vulpurr on a USB stick, an external drive, or any other portable storage medium.") + translationManager.emptyString
                 checkbox: true
                 checked: wizardModeSelection1.portable
 
