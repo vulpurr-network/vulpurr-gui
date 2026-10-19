@@ -90,12 +90,12 @@ jobs:
       - name: install dependencies
         run: HOMEBREW_NO_AUTO_UPDATE=1 brew install boost hidapi libsodium ninja openssl pkg-config protobuf unbound zeromq aria2
       - name: download Qt
-        run: mkdir qt6 && cd qt6 && python3 ../monero-gui/.github/qt_helper.py mac_x64 desktop 6.11.1 clang_64 4a88665d61643410399e15d2cc7625cca62d7f5a005d88c02a1e17dde7d9f62c
+        run: mkdir qt6 && cd qt6 && python3 ../vulpurr-gui/.github/qt_helper.py mac_x64 desktop 6.11.1 clang_64 4a88665d61643410399e15d2cc7625cca62d7f5a005d88c02a1e17dde7d9f62c
         working-directory: ../
       - name: configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_PREFIX_PATH="/Users/runner/work/monero-gui/qt6/"
+          -D CMAKE_PREFIX_PATH="/Users/runner/work/vulpurr-gui/qt6/"
           -D CMAKE_OSX_DEPLOYMENT_TARGET="13.0"
           -D ARCH=default
       - name: build
@@ -122,19 +122,19 @@ jobs:
     - name: prepare build environment
       run: docker build --tag monero:build-env-linux --build-arg THREADS=4 --file Dockerfile.linux .
     - name: build
-      run: docker run --rm -v /home/runner/work/monero-gui/monero-gui:/monero-gui -w /monero-gui monero:build-env-linux sh -c 'make depends root=/depends target=x86_64-linux-gnu tag=linux-x64'
+      run: docker run --rm -v ${{ github.workspace }}:/monero-gui -w /monero-gui monero:build-env-linux sh -c 'make depends root=/depends target=x86_64-linux-gnu tag=linux-x64'
     - name: sha256sum
-      run: shasum -a256 /home/runner/work/monero-gui/monero-gui/build/x86_64-linux-gnu/release/bin/monero-wallet-gui
+      run: shasum -a256 ${{ github.workspace }}/build/x86_64-linux-gnu/release/bin/monero-wallet-gui
     - name: install test dependencies
       run: sudo apt -y install xvfb libopengl0 libegl1 libgl1 libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-shape0
     - name: check qml startup
-      run: xvfb-run -a /home/runner/work/monero-gui/monero-gui/build/x86_64-linux-gnu/release/bin/monero-wallet-gui --check-qml
+      run: xvfb-run -a ${{ github.workspace }}/build/x86_64-linux-gnu/release/bin/monero-wallet-gui --check-qml
     - uses: actions/upload-artifact@v7
       with:
         name: ${{ github.job }}
         path: |
-          /home/runner/work/monero-gui/monero-gui/build/x86_64-linux-gnu/release/bin/monero-wallet-gui
-          /home/runner/work/monero-gui/monero-gui/build/x86_64-linux-gnu/release/bin/monerod
+          ${{ github.workspace }}/build/x86_64-linux-gnu/release/bin/monero-wallet-gui
+          ${{ github.workspace }}/build/x86_64-linux-gnu/release/bin/vulpurrd
 
   docker-windows-static:
     runs-on: ubuntu-22.04
@@ -147,15 +147,15 @@ jobs:
     - name: prepare build environment
       run: docker build --tag monero:build-env-windows --build-arg THREADS=4 --file Dockerfile.windows .
     - name: build
-      run: docker run --rm -v /home/runner/work/monero-gui/monero-gui:/monero-gui -w /monero-gui monero:build-env-windows sh -c 'make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64'
+      run: docker run --rm -v ${{ github.workspace }}:/monero-gui -w /monero-gui monero:build-env-windows sh -c 'make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64'
     - name: sha256sum
-      run: shasum -a256 /home/runner/work/monero-gui/monero-gui/build/x86_64-w64-mingw32/release/bin/monero-wallet-gui.exe
+      run: shasum -a256 ${{ github.workspace }}/build/x86_64-w64-mingw32/release/bin/monero-wallet-gui.exe
     - uses: actions/upload-artifact@v7
       with:
         name: ${{ github.job }}
         path: |
-          /home/runner/work/monero-gui/monero-gui/build/x86_64-w64-mingw32/release/bin/monero-wallet-gui.exe
-          /home/runner/work/monero-gui/monero-gui/build/x86_64-w64-mingw32/release/bin/monerod.exe
+          ${{ github.workspace }}/build/x86_64-w64-mingw32/release/bin/monero-wallet-gui.exe
+          ${{ github.workspace }}/build/x86_64-w64-mingw32/release/bin/vulpurrd.exe
 
   docker-android:
     runs-on: ubuntu-22.04
@@ -168,11 +168,11 @@ jobs:
     - name: prepare build environment
       run: docker build --tag monero:build-env-android --build-arg THREADS=4 --file Dockerfile.android .
     - name: build
-      run: docker run --rm -v /home/runner/work/monero-gui/monero-gui:/monero-gui monero:build-env-android
+      run: docker run --rm -v ${{ github.workspace }}:/monero-gui monero:build-env-android
     - uses: actions/upload-artifact@v7
       with:
         name: ${{ github.job }}
-        path: /home/runner/work/monero-gui/monero-gui/build/Android/release/android-build/build/outputs/apk/release/android-build-release-unsigned.apk
+        path: ${{ github.workspace }}/build/Android/release/android-build/build/outputs/apk/release/android-build-release-unsigned.apk
 
   source-archive:
     runs-on: ubuntu-slim
@@ -183,11 +183,11 @@ jobs:
     - name: archive
       run: |
         pip install git-archive-all
-        export VERSION="monero-gui-$(git describe)"
+        export VERSION="vulpurr-gui-$(git describe --always)"
         export OUTPUT="$VERSION.tar"
         echo "OUTPUT=$OUTPUT" >> $GITHUB_ENV
         /home/runner/.local/bin/git-archive-all --prefix "$VERSION/" --force-submodules "$OUTPUT"
     - uses: actions/upload-artifact@v7
       with:
         name: ${{ env.OUTPUT }}
-        path: /home/runner/work/monero-gui/monero-gui/${{ env.OUTPUT }}
+        path: ${{ github.workspace }}/${{ env.OUTPUT }}
