@@ -69,4 +69,4 @@ jobs:
           HASH="${{ steps.meta.outputs.hash }}"
           docker build             --tag "${IMG}:${HASH}"             --tag "${IMG}:latest"             --label "org.opencontainers.image.source=https://github.com/vulpurr-network/vulpurr-gui"             --build-arg THREADS=4             --file "Dockerfile.${{ matrix.name }}" .
           docker push "${IMG}:${HASH}"
-          docker push "${IMG}:latest"
+          docker push "${IMG}:latest" || true
