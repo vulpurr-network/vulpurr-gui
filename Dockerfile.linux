@@ -205,28 +205,38 @@ ARG QT_UNITY_BUILD=ON
 RUN rm -f /usr/lib/x86_64-linux-gnu/libX11.a \
         /usr/lib/x86_64-linux-gnu/libXext.a \
         /usr/lib/x86_64-linux-gnu/libX11-xcb.a && \
-    git clone https://github.com/qt/qt5.git -b ${QT_VERSION} --depth 1 qt-sources && \
-    git -C qt-sources reset --hard ${QT_COMMIT} && \
     sed -ri s/\(Libs:.*\)/\\1\ -lexpat/ /usr/local/lib/pkgconfig/fontconfig.pc && \
     sed -ri s/\(Libs:.*\)/\\1\ -lz/ /usr/local/lib/pkgconfig/freetype2.pc && \
     sed -ri s/\(Libs:.*\)/\\1\ -lXau/ /usr/local/lib/pkgconfig/xcb.pc && \
-    mkdir qt-build && \
+    ok=0; \
+    for attempt in 1 2 3; do \
+        if rm -rf qt-sources qt-build && \
+            git clone https://github.com/qt/qt5.git -b ${QT_VERSION} --depth 1 qt-sources && \
+            git -C qt-sources reset --hard ${QT_COMMIT} && \
+            mkdir qt-build && \
+            (cd qt-build && \
+            GIT_TERMINAL_PROMPT=0 ../qt-sources/configure -init-submodules \
+            -submodules qtbase,qtdeclarative,qtshadertools,qtsvg,qttools \
+            -prefix ${QT_PREFIX} -opensource -confirm-license -release -static -no-avx \
+            -opengl desktop -xcb -no-feature-xlib -system-freetype -fontconfig -no-feature-eglfs -no-glib \
+            -no-dbus -no-feature-qml-worker-script -no-feature-linuxfb -no-openssl -no-feature-sql -no-feature-kms \
+            -no-feature-testlib -no-feature-quick-particles -no-feature-qml-xmllistmodel -no-feature-qml-debug \
+            -no-feature-quickcontrols2-imagine -no-feature-quickcontrols2-universal -no-feature-quickcontrols2-fluentwinui3 \
+            -no-feature-printsupport -no-feature-pdf -no-feature-vulkan -no-feature-sessionmanager -no-feature-gtk3 \
+            -no-feature-assistant -no-feature-clang -no-feature-clangcpp -no-feature-qdoc -no-feature-designer -no-feature-distancefieldgenerator \
+            -no-feature-pixeltool -no-feature-qdbus -no-feature-qtattributionsscanner -no-feature-qtdiag -no-feature-qtplugininfo \
+            -no-feature-http -no-feature-ssl -no-feature-dtls -no-feature-ocsp -no-feature-networkproxy -no-feature-socks5 -no-feature-networkdiskcache \
+            -no-feature-brotli -no-feature-dnslookup -no-feature-topleveldomain -no-feature-udpsocket -no-feature-system-proxies \
+            -no-feature-sctp -skip qtactiveqt -skip qtlanguageserver -skip qtquicktimeline -qt-harfbuzz -qt-libjpeg -qt-libpng -qt-pcre -qt-zlib \
+            -nomake examples -nomake tests \
+            -- -DQT_UNITY_BUILD="${QT_UNITY_BUILD}"); then \
+            ok=1; break; \
+        fi; \
+        echo "Qt configure/submodule init failed (attempt $attempt), retrying in 15s..." >&2; \
+        sleep 15; \
+    done && \
+    test "$ok" = 1 && \
     cd qt-build && \
-    ../qt-sources/configure -init-submodules \
-    -submodules qtbase,qtdeclarative,qtshadertools,qtsvg,qttools \
-    -prefix ${QT_PREFIX} -opensource -confirm-license -release -static -no-avx \
-    -opengl desktop -xcb -no-feature-xlib -system-freetype -fontconfig -no-feature-eglfs -no-glib \
-    -no-dbus -no-feature-qml-worker-script -no-feature-linuxfb -no-openssl -no-feature-sql -no-feature-kms \
-    -no-feature-testlib -no-feature-quick-particles -no-feature-qml-xmllistmodel -no-feature-qml-debug \
-    -no-feature-quickcontrols2-imagine -no-feature-quickcontrols2-universal -no-feature-quickcontrols2-fluentwinui3 \
-    -no-feature-printsupport -no-feature-pdf -no-feature-vulkan -no-feature-sessionmanager -no-feature-gtk3 \
-    -no-feature-assistant -no-feature-clang -no-feature-clangcpp -no-feature-qdoc -no-feature-designer -no-feature-distancefieldgenerator \
-    -no-feature-pixeltool -no-feature-qdbus -no-feature-qtattributionsscanner -no-feature-qtdiag -no-feature-qtplugininfo \
-    -no-feature-http -no-feature-ssl -no-feature-dtls -no-feature-ocsp -no-feature-networkproxy -no-feature-socks5 -no-feature-networkdiskcache \
-    -no-feature-brotli -no-feature-dnslookup -no-feature-topleveldomain -no-feature-udpsocket -no-feature-system-proxies \
-    -no-feature-sctp -skip qtactiveqt -skip qtlanguageserver -skip qtquicktimeline -qt-harfbuzz -qt-libjpeg -qt-libpng -qt-pcre -qt-zlib \
-    -nomake examples -nomake tests \
-    -- -DQT_UNITY_BUILD="${QT_UNITY_BUILD}" && \
     cmake --build . --parallel $THREADS && \
     cmake --install . && \
     cd .. && \
@@ -249,3 +259,5 @@ RUN git clone -b libgcrypt-1.10.1 --depth 1 https://github.com/gpg/libgcrypt && 
     make -j$THREADS && \
     make -j$THREADS install && \
     rm -rf $(pwd)
+
+LABEL org.opencontainers.image.source="https://github.com/vulpurr-network/vulpurr-gui"

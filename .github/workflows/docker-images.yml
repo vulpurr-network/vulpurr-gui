@@ -48,7 +48,11 @@ jobs:
         id: meta
         run: |
           HASH=$(sha256sum "Dockerfile.${{ matrix.name }}" | cut -c1-12)
-          IMG="ghcr.io/vulpurr-network/vulpurr-gui-build-${{ matrix.name }}"
+          if [ "${{ matrix.name }}" = "linux" ]; then
+            IMG="ghcr.io/vulpurr-network/vulpurr-gui-linux"
+          else
+            IMG="ghcr.io/vulpurr-network/vulpurr-gui-build-windows"
+          fi
           SKIP=false
           if [ "${{ github.event_name }}" != "workflow_dispatch" ] && docker manifest inspect "${IMG}:${HASH}" >/dev/null 2>&1; then
             echo "Image ${IMG}:${HASH} already exists in GHCR; skipping rebuild."
@@ -68,5 +72,7 @@ jobs:
           IMG="${{ steps.meta.outputs.img }}"
           HASH="${{ steps.meta.outputs.hash }}"
           docker build             --tag "${IMG}:${HASH}"             --tag "${IMG}:latest"             --label "org.opencontainers.image.source=https://github.com/vulpurr-network/vulpurr-gui"             --build-arg THREADS=4             --file "Dockerfile.${{ matrix.name }}" .
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
           docker push "${IMG}:${HASH}"
+          sleep 5
           docker push "${IMG}:latest" || true

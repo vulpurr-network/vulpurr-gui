@@ -27,12 +27,14 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
           HASH=$(sha256sum Dockerfile.linux | cut -c1-12)
-          IMG="ghcr.io/vulpurr-network/vulpurr-gui-build-linux"
+          IMG="ghcr.io/vulpurr-network/vulpurr-gui-linux"
           if docker pull "${IMG}:${HASH}"; then
             docker tag "${IMG}:${HASH}" monero:build-env-linux
           else
             docker build --tag monero:build-env-linux --tag "${IMG}:${HASH}" --tag "${IMG}:latest" --label "org.opencontainers.image.source=https://github.com/vulpurr-network/vulpurr-gui" --build-arg THREADS=4 --file Dockerfile.linux .
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin || true
             docker push "${IMG}:${HASH}" || true
+            sleep 5
             docker push "${IMG}:latest" || true
           fi
       - name: Build wallet and vulpurrd (static)
