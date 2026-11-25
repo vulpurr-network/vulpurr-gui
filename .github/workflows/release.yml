@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  packages: write
 
 env:
   FREE_DISKSPACE: |
@@ -22,8 +23,18 @@ jobs:
           submodules: recursive
       - name: Free disk space
         run: ${{ env.FREE_DISKSPACE }}
-      - name: Build GUI docker image
-        run: docker build --tag monero:build-env-linux --build-arg THREADS=4 --file Dockerfile.linux .
+      - name: Prepare Linux build image (GHCR cache)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          HASH=$(sha256sum Dockerfile.linux | cut -c1-12)
+          IMG="ghcr.io/vulpurr-network/vulpurr-gui-build-linux"
+          if docker pull "${IMG}:${HASH}"; then
+            docker tag "${IMG}:${HASH}" monero:build-env-linux
+          else
+            docker build --tag monero:build-env-linux --tag "${IMG}:${HASH}" --tag "${IMG}:latest" --label "org.opencontainers.image.source=https://github.com/vulpurr-network/vulpurr-gui" --build-arg THREADS=4 --file Dockerfile.linux .
+            docker push "${IMG}:${HASH}" || true
+            docker push "${IMG}:latest" || true
+          fi
       - name: Build wallet and vulpurrd (static)
         run: docker run --rm -v ${{ github.workspace }}:/monero-gui -w /monero-gui monero:build-env-linux sh -c 'make depends root=/depends target=x86_64-linux-gnu tag=linux-x64'
       - name: Check QML startup
@@ -135,8 +146,18 @@ jobs:
           submodules: recursive
       - name: Free disk space
         run: ${{ env.FREE_DISKSPACE }}
-      - name: Build Windows docker image
-        run: docker build --tag monero:build-env-windows --build-arg THREADS=4 --file Dockerfile.windows .
+      - name: Prepare Windows build image (GHCR cache)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          HASH=$(sha256sum Dockerfile.windows | cut -c1-12)
+          IMG="ghcr.io/vulpurr-network/vulpurr-gui-build-windows"
+          if docker pull "${IMG}:${HASH}"; then
+            docker tag "${IMG}:${HASH}" monero:build-env-windows
+          else
+            docker build --tag monero:build-env-windows --tag "${IMG}:${HASH}" --tag "${IMG}:latest" --label "org.opencontainers.image.source=https://github.com/vulpurr-network/vulpurr-gui" --build-arg THREADS=4 --file Dockerfile.windows .
+            docker push "${IMG}:${HASH}" || true
+            docker push "${IMG}:latest" || true
+          fi
       - name: Build wallet and vulpurrd (static)
         run: docker run --rm -v ${{ github.workspace }}:/monero-gui -w /monero-gui monero:build-env-windows sh -c 'make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64'
       - name: Build vulpurr-p2pool.exe

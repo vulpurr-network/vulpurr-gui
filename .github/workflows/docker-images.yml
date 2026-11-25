@@ -1,0 +1,72 @@
+name: Build Docker Images
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - Dockerfile.linux
+      - Dockerfile.windows
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Which Docker build image(s) to rebuild
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - linux
+          - windows
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  FREE_DISKSPACE: |
+    sudo rm -rf /usr/local/.ghcup /usr/share/dotnet /usr/share/swift /usr/share/miniconda /usr/local/lib/android /opt/hostedtoolcache
+
+jobs:
+  build:
+    name: Docker ${{ matrix.name }}
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [linux, windows]
+    steps:
+      - if: github.event_name == 'push' || inputs.target == 'all' || inputs.target == matrix.name
+        uses: actions/checkout@v7
+
+      - if: github.event_name == 'push' || inputs.target == 'all' || inputs.target == matrix.name
+        name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - if: github.event_name == 'push' || inputs.target == 'all' || inputs.target == matrix.name
+        name: Compute image metadata
+        id: meta
+        run: |
+          HASH=$(sha256sum "Dockerfile.${{ matrix.name }}" | cut -c1-12)
+          IMG="ghcr.io/vulpurr-network/vulpurr-gui-build-${{ matrix.name }}"
+          SKIP=false
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ] && docker manifest inspect "${IMG}:${HASH}" >/dev/null 2>&1; then
+            echo "Image ${IMG}:${HASH} already exists in GHCR; skipping rebuild."
+            SKIP=true
+          fi
+          echo "hash=${HASH}" >> "$GITHUB_OUTPUT"
+          echo "img=${IMG}" >> "$GITHUB_OUTPUT"
+          echo "skip=${SKIP}" >> "$GITHUB_OUTPUT"
+
+      - if: (github.event_name == 'push' || inputs.target == 'all' || inputs.target == matrix.name) && steps.meta.outputs.skip != 'true'
+        name: Free disk space
+        run: ${{ env.FREE_DISKSPACE }}
+
+      - if: (github.event_name == 'push' || inputs.target == 'all' || inputs.target == matrix.name) && steps.meta.outputs.skip != 'true'
+        name: Build and push ${{ matrix.name }} image
+        run: |
+          IMG="${{ steps.meta.outputs.img }}"
+          HASH="${{ steps.meta.outputs.hash }}"
+          docker build             --tag "${IMG}:${HASH}"             --tag "${IMG}:latest"             --label "org.opencontainers.image.source=https://github.com/vulpurr-network/vulpurr-gui"             --build-arg THREADS=4             --file "Dockerfile.${{ matrix.name }}" .
+          docker push "${IMG}:${HASH}"
+          docker push "${IMG}:latest"

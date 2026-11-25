@@ -6,6 +6,10 @@ on:
       - master
   pull_request:
 
+permissions:
+  contents: read
+  packages: read
+
 env:
   FREE_DISKSPACE: |
     sudo rm -rf /usr/local/.ghcup /usr/share/dotnet /usr/share/swift /usr/share/miniconda /usr/local/lib/android /opt/hostedtoolcache
@@ -124,7 +128,15 @@ jobs:
     - name: free up diskspace
       run: ${{env.FREE_DISKSPACE}}
     - name: prepare build environment
-      run: docker build --tag monero:build-env-linux --build-arg THREADS=4 --file Dockerfile.linux .
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin || true
+        HASH=$(sha256sum Dockerfile.linux | cut -c1-12)
+        IMG="ghcr.io/vulpurr-network/vulpurr-gui-build-linux"
+        if docker pull "${IMG}:${HASH}"; then
+          docker tag "${IMG}:${HASH}" monero:build-env-linux
+        else
+          docker build --tag monero:build-env-linux --build-arg THREADS=4 --file Dockerfile.linux .
+        fi
     - name: build
       run: docker run --rm -v ${{ github.workspace }}:/monero-gui -w /monero-gui monero:build-env-linux sh -c 'make depends root=/depends target=x86_64-linux-gnu tag=linux-x64'
     - name: sha256sum
@@ -149,7 +161,15 @@ jobs:
     - name: free up diskspace
       run: ${{env.FREE_DISKSPACE}}
     - name: prepare build environment
-      run: docker build --tag monero:build-env-windows --build-arg THREADS=4 --file Dockerfile.windows .
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin || true
+        HASH=$(sha256sum Dockerfile.windows | cut -c1-12)
+        IMG="ghcr.io/vulpurr-network/vulpurr-gui-build-windows"
+        if docker pull "${IMG}:${HASH}"; then
+          docker tag "${IMG}:${HASH}" monero:build-env-windows
+        else
+          docker build --tag monero:build-env-windows --build-arg THREADS=4 --file Dockerfile.windows .
+        fi
     - name: build
       run: docker run --rm -v ${{ github.workspace }}:/monero-gui -w /monero-gui monero:build-env-windows sh -c 'make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64'
     - name: sha256sum
