@@ -1,65 +1,52 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   version="1.1"
-   width="282"
-   height="75"
-   id="Monero-Logo">
-  <metadata
-     id="metadata8">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs6" />
-  <path
-     d="m 37.3,0.35329395 c -20.377,0 -36.903,16.524 -36.903,36.902 0,4.074 0.66,7.992 1.88,11.657 l 11.036,0 0,-31.049 23.987,23.987 23.987,-23.987 0,31.049 11.037,0 c 1.22,-3.665 1.88,-7.583 1.88,-11.657 0,-20.378 -16.526,-36.902 -36.904,-36.902"
-     id="path22"
-     style="fill:#ff6600" />
-  <path
-     d="m 21.3164,36.895994 0,19.537 -15.55,0 c 6.478,10.628 18.178,17.726 31.533,17.726 13.355,0 25.056,-7.098 31.533,-17.726 l -15.549,0 0,-19.537 -15.984,15.984 z"
-     id="path26"
-     style="fill:#4c4c4c" />
-  <path
-     d="m 272.7087,47.761494 c -1.951,2.009 -4.317,3.01 -7.099,3.01 -2.458,0 -4.631,-0.772 -6.533,-2.324 -2.445,-1.979 -3.666,-4.674 -3.666,-8.084 0,-3.053 0.972,-5.576 2.916,-7.556 1.937,-1.987 4.331,-2.974 7.184,-2.974 2.817,0 5.212,1.016 7.177,3.045 1.973,2.03 2.959,4.512 2.959,7.449 0,2.945 -0.978,5.418 -2.938,7.434 m 4.097,-18.937 c -3.132,-3.151 -6.877,-4.731 -11.238,-4.731 -2.874,0 -5.561,0.723 -8.048,2.166 -2.496,1.444 -4.455,3.402 -5.877,5.876 -1.423,2.473 -2.137,5.183 -2.137,8.127 0,4.397 1.529,8.192 4.59,11.389 3.058,3.202 6.898,4.796 11.514,4.796 4.411,0 8.165,-1.551 11.26,-4.668 3.095,-3.11 4.639,-6.919 4.639,-11.416 0,-4.533 -1.566,-8.378 -4.703,-11.539"
-     id="path30"
-     style="fill:#4c4c4c" />
-  <path
-     d="m 238.3063,35.970494 c -0.743,0.518 -1.094,0.773 -3.06,0.773 l -7.736,0 0,-6.618 7.496,0 c 1.503,0 1.769,0.113 2.385,0.345 0.614,0.225 1.102,0.601 1.47,1.118 0.368,0.518 0.548,1.133 0.548,1.838 0,1.186 -0.368,2.034 -1.103,2.544 m 0.93,6.093 c 2.049,-0.736 3.587,-1.816 4.607,-3.241 1.021,-1.433 1.524,-3.205 1.524,-5.335 0,-2.019 -0.457,-3.775 -1.381,-5.253 -0.923,-1.478 -2.146,-2.536 -3.661,-3.174 -1.516,-0.638 -4.06,-0.96 -7.639,-0.96 l -11.329,0 0,32.34 6.153,0 0,-13.694 5.37,0 7.28,13.694 6.73,0 -7.654,-14.377 z"
-     id="path34"
-     style="fill:#4c4c4c" />
-  <path
-     d="m 193.7751,24.093494 20.968,0 0,6.025 -14.852,0 0,6.619 14.852,0 0,5.92 -14.852,0 0,7.728 14.852,0 0,6.049 -20.968,0 0,-32.341 z"
-     id="path38"
-     style="fill:#4c4c4c" />
-  <path
-     d="m 161.2868,24.093494 5.891,0 13.874,21.28 0,-21.28 6.153,0 0,32.34 -5.913,0 -13.852,-21.212 0,21.212 -6.153,0 0,-32.34 z"
-     id="path42"
-     style="fill:#4c4c4c" />
-  <use
-     transform="translate(-125.0586,0)"
-     id="use46"
-     x="0"
-     y="0"
-     width="282"
-     height="75"
-     xlink:href="#path30" />
-  <path
-     d="m 89.6882,24.092594 6.025,0 7.473,22.557 7.587,-22.557 5.935,0 5.449,32.341 -5.936,0 -3.474,-20.425 -6.881,20.425 -5.426,0 -6.79,-20.425 -3.542,20.425 -6.003,0 5.583,-32.341 z"
-     id="path50"
-     style="fill:#4c4c4c" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="282" height="75" viewBox="0 0 282 75"><defs><radialGradient id="vbg" cx="38%" cy="28%" r="78%">
+      <stop offset="0%" stop-color="#37216b"/>
+      <stop offset="55%" stop-color="#201240"/>
+      <stop offset="100%" stop-color="#120926"/>
+    </radialGradient>
+    <linearGradient id="vrim" x1="12%" y1="0%" x2="88%" y2="100%">
+      <stop offset="0%" stop-color="#ffd280" stop-opacity="0.9"/>
+      <stop offset="48%" stop-color="#ff8a3d" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#9668ff" stop-opacity="0.7"/>
+    </linearGradient>
+    <linearGradient id="vfur" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffbe5c"/>
+      <stop offset="45%" stop-color="#ff832e"/>
+      <stop offset="100%" stop-color="#e84e1b"/>
+    </linearGradient>
+    <linearGradient id="vearL" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#ffb44d"/>
+      <stop offset="100%" stop-color="#e34d1a"/>
+    </linearGradient>
+    <linearGradient id="vearR" x1="85%" y1="0%" x2="15%" y2="100%">
+      <stop offset="0%" stop-color="#ffc366"/>
+      <stop offset="100%" stop-color="#eb5a22"/>
+    </linearGradient>
+    <linearGradient id="vcheek" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f2e8fb"/>
+    </linearGradient>
+    <linearGradient id="vcrown" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffe7a8" stop-opacity="0.72"/>
+      <stop offset="100%" stop-color="#ff8a3d" stop-opacity="0"/>
+    </linearGradient></defs><g transform="translate(0 0) scale(0.29296875)">
+  <circle cx="128" cy="128" r="123" fill="url(#vbg)" stroke="url(#vrim)" stroke-width="6"/>
+  <g transform="translate(128 130) scale(0.94) translate(-128 -130)">
+    <path fill="url(#vearL)" d="M51 39 C60 39 94 69 107 90 L54 131 C45 99 45 53 51 39 Z"/>
+    <path fill="url(#vearR)" d="M205 39 C196 39 162 69 149 90 L202 131 C211 99 211 53 205 39 Z"/>
+    <path fill="#1b1033" d="M61 62 C72 69 87 82 95 94 L65 114 C60 96 59 75 61 62 Z"/>
+    <path fill="#1b1033" d="M195 62 C184 69 169 82 161 94 L191 114 C196 96 197 75 195 62 Z"/>
+    <path fill="#ff7d47" opacity="0.72" d="M68 78 L89 94 L70 108 Z"/>
+    <path fill="#ff7d47" opacity="0.72" d="M188 78 L167 94 L186 108 Z"/>
+    <path fill="url(#vfur)" d="M104 88 Q128 81 152 88 L201 121 L220 147 L190 175 L128 220 L66 175 L36 147 L55 121 Z"/>
+    <path fill="#d64015" opacity="0.22" d="M55 121 L36 147 L96 149 L104 88 Z"/>
+    <path fill="#ffd98a" opacity="0.26" d="M201 121 L220 147 L160 149 L152 88 Z"/>
+    <path fill="url(#vcrown)" d="M104 88 Q128 81 152 88 L139 160 L128 176 L117 160 Z"/>
+    <path fill="url(#vcheek)" d="M36 147 C60 145 86 153 110 171 L128 184 L146 171 C170 153 196 145 220 147 L200 167 L205 174 L182 182 L128 220 L74 182 L51 174 L56 167 Z"/>
+    <path fill="url(#vfur)" d="M113 151 L128 182 L143 151 Q128 159 113 151 Z"/>
+    <path fill="#160c2b" d="M74 140 C85 127 105 130 112 145 C99 152 84 150 74 140 Z"/>
+    <path fill="#160c2b" d="M182 140 C171 127 151 130 144 145 C157 152 172 150 182 140 Z"/>
+    <circle cx="91" cy="138" r="3.4" fill="#ffffff"/>
+    <circle cx="161" cy="138" r="3.4" fill="#ffffff"/>
+    <path fill="#160c2b" d="M115 178 Q128 174 141 178 L131 193 Q128 196 125 193 Z"/>
+    <ellipse cx="128" cy="180" rx="5.5" ry="1.8" fill="#ffffff" opacity="0.4"/>
+  </g></g><text x="97.5" y="53.2" font-family="Manrope" font-weight="800" font-size="36.0" letter-spacing="0.6" fill="#1A1030">VULPURR</text></svg>

@@ -1,9 +1,9 @@
-<p align="center"><img src="https://vulpurr.com/logo.svg" width="96" alt="Vulpurr"></p>
+<p align="center"><img src="https://vulpurr.com/logo.svg?v=2" width="96" alt="Vulpurr"></p>
 
 <h1 align="center">Vulpurr Wallet</h1>
 
 <p align="center">Desktop wallet for Vulpurr (VUP) with a built-in node, one-click P2Pool mining and signed auto-updates.<br>
-<a href="https://vulpurr.com/download">Download for Windows</a> · <a href="https://vulpurr.com">Website</a> · <a href="https://t.me/vulpurr">Telegram</a></p>
+<a href="https://vulpurr.com/#download">Download (Windows / Linux / macOS)</a> · <a href="https://vulpurr.com">Website</a> · <a href="https://t.me/vulpurr">Telegram</a></p>
 
 **English** · [Русский](#русский)
 

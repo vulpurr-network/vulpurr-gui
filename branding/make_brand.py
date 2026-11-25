@@ -195,6 +195,7 @@ def main():
         render(wordmark(125, 28, LIGHT), os.path.join(IMG, f"titlebarLogo{suffix}.png"), 125 * scale, 28 * scale)
         render(wordmark(125, 28, DARK), os.path.join(IMG, "themes", "white", f"titlebarLogo{suffix}.png"), 125 * scale, 28 * scale)
     render(wordmark(132, 22, LIGHT, with_mark=False, font_size=20), os.path.join(IMG, "moneroLogo_white.png"), 132, 22)
+    open(os.path.join(IMG, "themes", "white", "Monero-Logo.svg"), "w").write(wordmark(282, 75, DARK, font_size=36))
 
     for size, cx, cy, d in ((32, 9.75, 24.25, 8.5), (64, 19.5, 48.5, 17)):
         fname = "miningxmr.png" if size == 32 else "miningxmr@2x.png"
