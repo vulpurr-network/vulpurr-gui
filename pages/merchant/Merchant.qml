@@ -129,7 +129,10 @@ Item {
                 anchors.top: parent.top
                 height: 220
                 width: (parent.width - qrImg.width) - 50
-                radius: 5
+                radius: 10
+                color: "#231640"
+                border.color: "#3A2766"
+                border.width: 1
 
                 ColumnLayout {
                     anchors.top: parent.top
@@ -155,7 +158,7 @@ Item {
                             MoneroComponents.TextPlain {
                                 font.pixelSize: 16
                                 font.bold: true
-                                color: "#767676"
+                                color: "#FBF6FF"
                                 text: qsTr("Sales") + translationManager.emptyString
                                 themeTransition: false
                             }
@@ -173,7 +176,7 @@ Item {
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 1
-                        color: "#d9d9d9"
+                        color: "#3A2766"
                     }
 
                     MerchantTrackingList {
@@ -228,7 +231,7 @@ Item {
 
                 Layout.maximumWidth: root.qrCodeSize
                 Layout.preferredHeight: width
-                radius: 5
+                radius: 10
 
                 Image {
                     id: qrCode
@@ -289,8 +292,8 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: 12
                     font.bold: false
-                    color: "white"
-                    text: "<style type='text/css'>a {text-decoration: none; color: #FF6C3C; font-size: 12px;}</style>%1: %2 <a href='#'>(%3)</a>"
+                    color: "#E4D8FA"
+                    text: "<style type='text/css'>a {text-decoration: none; color: #FF8A3D; font-size: 12px;}</style>%1: %2 <a href='#'>(%3)</a>"
                         .arg(qsTr("Currently selected address"))
                         .arg(Utils.htmlEscape(addressLabel))
                         .arg(qsTr("Change")) + translationManager.emptyString
@@ -317,7 +320,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: 12
                     font.bold: false
-                    color: "white"
+                    color: "#E4D8FA"
                     text: qsTr("(right-click, save as)") + translationManager.emptyString
                     themeTransition: false
                 }
@@ -335,7 +338,10 @@ Item {
                 anchors.top: parent.top
                 implicitHeight: 120
                 width: (parent.width - qrImg.width) - (50)
-                radius: 5
+                radius: 10
+                color: "#231640"
+                border.color: "#3A2766"
+                border.width: 1
 
                 ColumnLayout {
                     anchors.top: parent.top
@@ -361,7 +367,7 @@ Item {
                             MoneroComponents.TextPlain {
                                 font.pixelSize: 14
                                 font.bold: true
-                                color: "#767676"
+                                color: "#FBF6FF"
                                 text: qsTr("Payment URL") + translationManager.emptyString
                                 themeTransition: false
                             }
@@ -409,11 +415,11 @@ Item {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 1
 
-                        color: "#d9d9d9"
+                        color: "#3A2766"
                     }
 
                     MoneroComponents.TextPlain {
-                        property string _color: "#767676"
+                        property string _color: "#B9A9D6"
                         Layout.fillWidth: true
                         Layout.margins: 20
                         Layout.topMargin: 10
@@ -476,28 +482,31 @@ Item {
                         themeTransition: false
                     }
 
-                    Image {
-                        height: 28
+                    Rectangle {
+                        height: 32
                         width: 220
-                        source: "qrc:///images/merchant/input_box.png"
+                        radius: 6
+                        color: "#130B24"
+                        border.color: amountToReceive.activeFocus ? "#FF8A3D" : "#3A2766"
+                        border.width: 1
 
                         MoneroComponents.Input {
                             id: amountToReceive
                             topPadding: 0
+                            bottomPadding: 0
                             leftPadding: 10
+                            rightPadding: 10
 
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.top: parent.top
-                            anchors.topMargin: 3
+                            anchors.fill: parent
                             font.pixelSize: 16
                             font.bold: true
                             horizontalAlignment: TextInput.AlignLeft
                             verticalAlignment: TextInput.AlignVCenter
                             selectByMouse: true
-                            color: "#424242"
-                            selectionColor: "#3f3fe3"
-                            selectedTextColor: "white"
+                            color: "#FBF6FF"
+                            placeholderTextColor: "#8A7BB0"
+                            selectionColor: "#FF8A3D"
+                            selectedTextColor: "#140B26"
                             placeholderText: "0.00"
 
                             background: Rectangle {
@@ -530,11 +539,14 @@ Item {
                         themeTransition: false
                     }
 
-                    Image {
+                    Rectangle {
                         visible: false
-                        height: 28
+                        height: 32
                         width: 220
-                        source: "qrc:///images/merchant/input_box.png"
+                        radius: 6
+                        color: "#130B24"
+                        border.color: "#3A2766"
+                        border.width: 1
                         opacity: 0.2
                     }
                 }
@@ -586,14 +598,17 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         height: 120
         width: 400
-        radius: 5
+        radius: 10
+        color: "#231640"
+        border.color: "#3A2766"
+        border.width: 1
 
         MoneroComponents.TextPlain {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             font.pixelSize: 14
             font.bold: true
-            color: MoneroComponents.Style.moneroGrey
+            color: "#FBF6FF"
             text: qsTr("The merchant page requires a larger window") + translationManager.emptyString
             themeTransition: false
         }

@@ -451,7 +451,7 @@ Rectangle {
                     text: "
                     Usage:<br>
                         --wallet              Wallet address to mine to. Subaddresses and integrated addresses are not supported!<br>
-                        --host                IP address of your Monero node, default is 127.0.0.1<br>
+                        --host                IP address of your Vulpurr node, default is 127.0.0.1<br>
                         --rpc-port            monerod RPC API port number, default is 27081<br>
                         --zmq-port            monerod ZMQ pub port number, default is 27083 (same port as in monerod\'s \"--zmq-pub\" command line parameter)<br>
                         --stratum             Comma-separated list of IP:port for stratum server to listen on<br>
@@ -472,7 +472,7 @@ Rectangle {
                         --in-peers N          Maximum number of incoming connections for p2p server (any value between 10 and 1000)<br>
                         --start-mining N      Start built-in miner using N threads (any value between 1 and 64)<br>
                         --no-autodiff         Disable automatic difficulty adjustment for miners connected to stratum (WARNING: incompatible with Nicehash and MRR)<br>
-                        --rpc-login           Specify username[:password] required for Monero RPC server<br>
+                        --rpc-login           Specify username[:password] required for Vulpurr RPC server<br>
                         --socks5              Specify IP:port of a SOCKS5 proxy to use for outgoing connections<br>
                         --no-dns              Disable DNS queries, use only IP addresses to connect to peers (seed node DNS will be unavailable too)<br>
                         --p2p-external-port   Port number that your router uses for mapping to your local p2p port. Use it if you are behind a NAT and still want to accept incoming connections<br>
@@ -483,8 +483,8 @@ Rectangle {
                         --version             Print p2pool's version and build details<br>
                         --tls-cert file       Load TLS certificate chain from \"file\" in the PEM format<br>
                         --tls-cert-key file   Load TLS certificate private key from \"file\" in the PEM format<br>
-                        --rpc-ssl             Enable SSL on RPC connections to the Monero node<br>
-                        --rpc-ssl-fingerprint base64-encoded fingerprint of the Monero node's certificate (optional, use it for certificate pinning)<br>
+                        --rpc-ssl             Enable SSL on RPC connections to the Vulpurr node<br>
+                        --rpc-ssl-fingerprint base64-encoded fingerprint of the Vulpurr node's certificate (optional, use it for certificate pinning)<br>
                         --no-stratum-http     Disable HTTP on Stratum ports<br>
                         --help                Show this help message
                     "

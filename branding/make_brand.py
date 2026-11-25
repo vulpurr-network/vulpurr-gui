@@ -193,6 +193,29 @@ def installer_header():
     return svg(w, h, body)
 
 
+
+def merchant_bg():
+    body = """<defs>
+      <linearGradient id="mbg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#2E1B5E"/>
+        <stop offset="100%" stop-color="#1F123E"/>
+      </linearGradient>
+      <linearGradient id="mbot" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#160C2E"/>
+        <stop offset="100%" stop-color="#1A1030"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="1" height="168" fill="url(#mbg)"/>
+    <rect x="0" y="168" width="1" height="3" fill="#FF8A3D"/>
+    <rect x="0" y="171" width="1" height="129" fill="url(#mbot)"/>"""
+    return svg(1, 300, body)
+
+
+def merchant_arrow():
+    body = '<path d="M3 3 L9.5 10.5 L3 18" fill="none" stroke="#B9A9D6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
+    return svg(12, 21, body)
+
+
 def render_bmp3(svg_str, out_path, w, h):
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     png_tmp = out_path + ".tmp.png"
@@ -250,6 +273,8 @@ def main():
     open(os.path.join(IMG, "themes", "white", "Monero-Logo.svg"), "w").write(wordmark(282, 75, DARK, font_size=36))
     render_bmp3(installer_welcome(), os.path.join(ROOT, "installers", "windows", "vulpurr-welcome.bmp"), 164, 314)
     render_bmp3(installer_header(), os.path.join(ROOT, "installers", "windows", "vulpurr-header.bmp"), 150, 57)
+    render(merchant_bg(), os.path.join(IMG, "merchant", "bg.png"), 1, 300)
+    render(merchant_arrow(), os.path.join(IMG, "merchant", "arrow_right.png"), 12, 21)
 
     for size, cx, cy, d in ((32, 9.75, 24.25, 8.5), (64, 19.5, 48.5, 17)):
         fname = "miningxmr.png" if size == 32 else "miningxmr@2x.png"

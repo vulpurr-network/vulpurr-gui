@@ -61,7 +61,7 @@ ListView {
 
         font.pixelSize: 14
         font.bold: false
-        color: "#767676"
+        color: "#B9A9D6"
         textFormat: Text.RichText
         text: parent.message
         selectionColor: MoneroComponents.Style.textSelectionColor
@@ -102,7 +102,7 @@ ListView {
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: 13
                         font.bold: false
-                        color: "#707070"
+                        color: "#B9A9D6"
                         text: time_date + " (" + Utils.ago(time_epoch) + ") "
                         selectionColor: MoneroComponents.Style.textSelectionColor
                         selectByMouse: true
@@ -126,7 +126,7 @@ ListView {
                             readOnly: true
                             font.pixelSize: 12
                             font.bold: false
-                            color: "#707070"
+                            color: "#8A7BB0"
                             text: (hide_amount ? "(" + qsTr("show") + ")" : "(" + qsTr("hide") + ")") + translationManager.emptyString
                         }
 
@@ -151,7 +151,7 @@ ListView {
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: 14
                         font.bold: true
-                        color: hide_amount ? "#707070" : "#009F1E"
+                        color: hide_amount ? "#8A7BB0" : "#7AF0C4"
                         text: hide_amount ? '-' : '+' + amount + (in_txpool ? ' (%1)'.arg(qsTr('unconfirmed')) : '') 
                         selectionColor: MoneroComponents.Style.textSelectionColor
                         selectByMouse: true
@@ -184,7 +184,7 @@ ListView {
                         anchors.verticalCenter: parent.verticalCenter
                         font.pixelSize: 12
                         font.bold: false
-                        color: "#a8a8a8"
+                        color: "#B9A9D6"
                         text: {
                             if(in_txpool){
                                 return qsTr("Awaiting in txpool") + translationManager.emptyString;
@@ -252,7 +252,7 @@ ListView {
             anchors.left: parent.left
             anchors.top: container.bottom
             height: 1
-            color: "#F0F0F0"
+            color: "#3A2766"
         }
     }
 }

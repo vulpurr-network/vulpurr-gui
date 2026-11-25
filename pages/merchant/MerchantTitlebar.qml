@@ -57,7 +57,7 @@ Rectangle {
         width: parent.width
         height: parent.height
         z: parent.z + 1
-        color: "#ff6600"
+        color: "#2E1B5E"
     }
 
     RowLayout {
@@ -70,20 +70,20 @@ Rectangle {
             Layout.preferredWidth: parent.height * 3
         }
 
-        // monero logo
+        // vulpurr logo
         Item {
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height
 
             Image {
                 id: imgLogo
-                width: 132
-                height: 22
+                width: 125
+                height: 28
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
 
-                source: "qrc:///images/moneroLogo_white.png"
+                source: "qrc:///images/titlebarLogo.png"
             }
         }
 

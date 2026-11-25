@@ -51,13 +51,19 @@ Item {
             Rectangle {
                 id: checkbox
                 anchors.fill: parent
-                radius: 5
+                radius: 4
+                color: root.checked ? "#FF8A3D" : "#130B24"
+                border.color: root.checked ? "#FF8A3D" : "#3A2766"
+                border.width: 1
 
                 Image {
                     id: imageChecked
                     visible: root.checked
                     anchors.centerIn: parent
-                    source: "qrc:///images/uncheckedIcon.png"
+                    width: 12
+                    height: 12
+                    source: "qrc:///images/check-white.svg"
+                    smooth: true
                 }
             }
             MultiEffect {
@@ -75,7 +81,7 @@ Item {
             id: content
             font.pixelSize: 14
             font.bold: false
-            color: "white"
+            color: "#FBF6FF"
             text: ""
             themeTransition: false
         }
