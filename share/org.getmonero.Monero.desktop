@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Monero GUI
+Name=Vulpurr Wallet
 GenericName=Cryptocurrency wallet
-Comment=Monero GUI
+Comment=Vulpurr private cryptocurrency wallet
 Exec=monero-wallet-gui
 Type=Application
 Terminal=false

@@ -1,3 +1,3 @@
 #pragma once
-// Bumped by the release script on every release
-#define VULPURR_BUILD 13
+// Bumped by /root/vp/upd/publish.sh on every release
+#define VULPURR_BUILD 14

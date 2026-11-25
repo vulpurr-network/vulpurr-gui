@@ -1,0 +1,180 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FREE_DISKSPACE: |
+    sudo rm -rf /usr/local/.ghcup /usr/share/dotnet /usr/share/swift /usr/share/miniconda /usr/local/lib/android /opt/hostedtoolcache
+
+jobs:
+  linux-x64:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Free disk space
+        run: ${{ env.FREE_DISKSPACE }}
+      - name: Build GUI docker image
+        run: docker build --tag monero:build-env-linux --build-arg THREADS=4 --file Dockerfile.linux .
+      - name: Build wallet and vulpurrd (static)
+        run: docker run --rm -v ${{ github.workspace }}:/monero-gui -w /monero-gui monero:build-env-linux sh -c 'make depends root=/depends target=x86_64-linux-gnu tag=linux-x64'
+      - name: Check QML startup
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install xvfb libopengl0 libegl1 libgl1 libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-shape0
+          xvfb-run -a build/x86_64-linux-gnu/release/bin/monero-wallet-gui --check-qml
+      - name: Build static vulpurr-p2pool
+        run: |
+          git clone --recursive https://github.com/vulpurr-network/vulpurr-p2pool.git /tmp/p2pool-src
+          docker run --rm -v /tmp/p2pool-src:/p2pool -w /p2pool alpine:latest sh -c '
+            set -e
+            apk add --no-cache git cmake gcc g++ make linux-headers xz
+            N=$(nproc)
+            (cd external/src/curl && cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Os -flto=auto" -DCURL_DROP_UNUSED=ON -DCURL_DISABLE_TYPECHECK=ON -DCURL_DISABLE_OPENSSL_AUTO_LOAD_CONFIG=ON -DCURL_DISABLE_SHA512_256=ON -DPICKY_COMPILER=OFF -DBUILD_CURL_EXE=OFF -DBUILD_SHARED_LIBS=OFF -DCURL_DISABLE_INSTALL=ON -DCURL_ENABLE_EXPORT_TARGET=OFF -DCURL_DISABLE_HEADERS_API=ON -DCURL_DISABLE_BINDLOCAL=ON -DBUILD_LIBCURL_DOCS=OFF -DBUILD_MISC_DOCS=OFF -DENABLE_CURL_MANUAL=OFF -DCURL_ZLIB=OFF -DCURL_BROTLI=OFF -DCURL_ZSTD=OFF -DCURL_DISABLE_ALTSVC=ON -DCURL_DISABLE_COOKIES=ON -DCURL_DISABLE_DOH=ON -DCURL_DISABLE_GETOPTIONS=ON -DCURL_DISABLE_HSTS=ON -DCURL_DISABLE_LIBCURL_OPTION=ON -DCURL_DISABLE_MIME=ON -DCURL_DISABLE_NETRC=ON -DCURL_DISABLE_NTLM=ON -DCURL_DISABLE_PARSEDATE=ON -DCURL_DISABLE_PROGRESS_METER=ON -DCURL_DISABLE_SHUFFLE_DNS=ON -DCURL_DISABLE_VERBOSE_STRINGS=ON -DHTTP_ONLY=ON -DCURL_ENABLE_SSL=OFF -DUSE_LIBIDN2=OFF -DCURL_USE_LIBPSL=OFF -DCURL_USE_LIBSSH2=OFF -DENABLE_UNIX_SOCKETS=OFF -DBUILD_TESTING=OFF -DUSE_NGHTTP2=OFF -DBUILD_EXAMPLES=OFF -DP2POOL_BORINGSSL=ON -DCURL_DISABLE_SRP=ON -DCURL_DISABLE_AWS=ON -DCURL_DISABLE_BASIC_AUTH=ON -DCURL_DISABLE_BEARER_AUTH=ON -DCURL_DISABLE_KERBEROS_AUTH=ON -DCURL_DISABLE_NEGOTIATE_AUTH=ON -DOPENSSL_INCLUDE_DIR=../grpc/third_party/boringssl-with-bazel/include && make -j"$N")
+            (cd external/src/libuv && mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Os -flto=auto" -DBUILD_TESTING=OFF -DLIBUV_BUILD_SHARED=OFF -DENABLE_CLANG_TIDY=OFF && make -j"$N")
+            (cd external/src/libzmq && mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_C_FLAGS="-Os -flto=auto" -DCMAKE_CXX_FLAGS="-Os -flto=auto" -DWITH_LIBSODIUM=OFF -DWITH_LIBBSD=OFF -DBUILD_TESTS=OFF -DWITH_DOCS=OFF -DENABLE_DRAFTS=OFF -DBUILD_SHARED=OFF && make -j"$N")
+            mkdir -p build && cd build
+            cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_C_FLAGS="-Wl,-s -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Wl,-s -Wl,--gc-sections" -DWITH_GRPC=OFF -DSTATIC_BINARY=ON -DARCH_ID=x86_64 -DDISABLE_WARNINGS=ON
+            make -j"$N" p2pool
+            strip p2pool || true
+          '
+      - name: Package Linux release archive
+        run: |
+          mkdir -p dist/Vulpurr
+          cp build/x86_64-linux-gnu/release/bin/monero-wallet-gui dist/Vulpurr/vulpurr-wallet
+          cp build/x86_64-linux-gnu/release/bin/vulpurrd dist/Vulpurr/vulpurrd
+          cp /tmp/p2pool-src/build/p2pool dist/Vulpurr/vulpurr-p2pool
+          strip dist/Vulpurr/vulpurr-wallet dist/Vulpurr/vulpurrd || true
+          chmod 755 dist/Vulpurr/vulpurr-wallet dist/Vulpurr/vulpurrd dist/Vulpurr/vulpurr-p2pool
+          cp images/appicons/256x256.png dist/Vulpurr/vulpurr.png
+          sed 's|Exec=monero-wallet-gui|Exec=./vulpurr-wallet|; s|Icon=org.getmonero.Monero|Icon=vulpurr|' share/org.getmonero.Monero.desktop > dist/Vulpurr/vulpurr.desktop
+          tar -C dist -czf dist/Vulpurr-linux-x64.tar.gz Vulpurr
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-linux-x64
+          path: dist/Vulpurr-linux-x64.tar.gz
+
+  macos:
+    name: macOS ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x64
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Install dependencies
+        run: HOMEBREW_NO_AUTO_UPDATE=1 brew install boost hidapi libsodium ninja openssl pkg-config protobuf unbound zeromq aria2
+      - name: Download Qt
+        run: mkdir qt6 && cd qt6 && python3 ../vulpurr-gui/.github/qt_helper.py mac_x64 desktop 6.11.1 clang_64 4a88665d61643410399e15d2cc7625cca62d7f5a005d88c02a1e17dde7d9f62c
+        working-directory: ../
+      - name: Configure and build GUI + vulpurrd
+        run: |
+          cmake -S . -B build -G Ninja \
+            -D CMAKE_PREFIX_PATH="${{ github.workspace }}/../qt6/" \
+            -D CMAKE_OSX_DEPLOYMENT_TARGET="13.0" \
+            -D ARCH=default
+          cmake --build build
+      - name: Build vulpurr-p2pool
+        run: |
+          git clone --recursive https://github.com/vulpurr-network/vulpurr-p2pool.git /tmp/p2pool-src
+          cd /tmp/p2pool-src
+          N=$(sysctl -n hw.ncpu)
+          (cd external/src/curl && cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Os -mmacosx-version-min=13.0" -DCURL_DROP_UNUSED=ON -DCURL_DISABLE_TYPECHECK=ON -DCURL_DISABLE_OPENSSL_AUTO_LOAD_CONFIG=ON -DCURL_DISABLE_SHA512_256=ON -DPICKY_COMPILER=OFF -DBUILD_CURL_EXE=OFF -DBUILD_SHARED_LIBS=OFF -DCURL_DISABLE_INSTALL=ON -DCURL_ENABLE_EXPORT_TARGET=OFF -DCURL_DISABLE_HEADERS_API=ON -DCURL_DISABLE_BINDLOCAL=ON -DBUILD_LIBCURL_DOCS=OFF -DBUILD_MISC_DOCS=OFF -DENABLE_CURL_MANUAL=OFF -DCURL_ZLIB=OFF -DCURL_BROTLI=OFF -DCURL_ZSTD=OFF -DCURL_DISABLE_ALTSVC=ON -DCURL_DISABLE_COOKIES=ON -DCURL_DISABLE_DOH=ON -DCURL_DISABLE_GETOPTIONS=ON -DCURL_DISABLE_HSTS=ON -DCURL_DISABLE_LIBCURL_OPTION=ON -DCURL_DISABLE_MIME=ON -DCURL_DISABLE_NETRC=ON -DCURL_DISABLE_NTLM=ON -DCURL_DISABLE_PARSEDATE=ON -DCURL_DISABLE_PROGRESS_METER=ON -DCURL_DISABLE_SHUFFLE_DNS=ON -DCURL_DISABLE_VERBOSE_STRINGS=ON -DHTTP_ONLY=ON -DCURL_ENABLE_SSL=OFF -DUSE_LIBIDN2=OFF -DCURL_USE_LIBPSL=OFF -DCURL_USE_LIBSSH2=OFF -DENABLE_UNIX_SOCKETS=OFF -DBUILD_TESTING=OFF -DUSE_NGHTTP2=OFF -DBUILD_EXAMPLES=OFF -DP2POOL_BORINGSSL=ON -DCURL_DISABLE_SRP=ON -DCURL_DISABLE_AWS=ON -DCURL_DISABLE_BASIC_AUTH=ON -DCURL_DISABLE_BEARER_AUTH=ON -DCURL_DISABLE_KERBEROS_AUTH=ON -DCURL_DISABLE_NEGOTIATE_AUTH=ON -DOPENSSL_INCLUDE_DIR=../grpc/third_party/boringssl-with-bazel/include && make -j"$N")
+          (cd external/src/libuv && mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Os -mmacosx-version-min=13.0" -DBUILD_TESTING=OFF -DLIBUV_BUILD_SHARED=OFF -DENABLE_CLANG_TIDY=OFF && make -j"$N")
+          (cd external/src/libzmq && mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_C_FLAGS="-Os -mmacosx-version-min=13.0" -DCMAKE_CXX_FLAGS="-Os -mmacosx-version-min=13.0" -DWITH_LIBSODIUM=OFF -DWITH_LIBBSD=OFF -DBUILD_TESTS=OFF -DWITH_DOCS=OFF -DENABLE_DRAFTS=OFF -DBUILD_SHARED=OFF && make -j"$N")
+          mkdir -p build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_C_FLAGS="-mmacosx-version-min=13.0" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=13.0" -DWITH_GRPC=OFF -DWITH_LTO=OFF -DSTATIC_LIBS=ON -DDISABLE_WARNINGS=ON
+          make -j"$N" p2pool
+      - name: Bundle and sign Vulpurr.app
+        run: |
+          cp build/bin/vulpurrd build/bin/monero-wallet-gui.app/Contents/MacOS/vulpurrd
+          cp /tmp/p2pool-src/build/p2pool build/bin/monero-wallet-gui.app/Contents/MacOS/vulpurr-p2pool
+          chmod 755 build/bin/monero-wallet-gui.app/Contents/MacOS/vulpurrd build/bin/monero-wallet-gui.app/Contents/MacOS/vulpurr-p2pool
+          cmake --build build --target deploy
+          MACDEPLOYQT=$(find "${{ github.workspace }}/../qt6" -name macdeployqt -type f | head -n 1)
+          BREW_LIB="$(brew --prefix)/lib"
+          "$MACDEPLOYQT" build/bin/monero-wallet-gui.app -executable=build/bin/monero-wallet-gui.app/Contents/MacOS/vulpurrd -libpath="$BREW_LIB" -always-overwrite
+          cmake -DEXECUTABLE=build/bin/monero-wallet-gui.app/Contents/MacOS/vulpurrd -DINSTALL_NAME_TOOL="$(which install_name_tool)" -P cmake/DeleteHomebrewRpaths.cmake
+          mv build/bin/monero-wallet-gui.app build/bin/Vulpurr.app
+          codesign --force --deep --sign - build/bin/Vulpurr.app
+          build/bin/Vulpurr.app/Contents/MacOS/monero-wallet-gui --check-qml
+      - name: Package macOS tar.gz and dmg
+        run: |
+          mkdir -p dist dmg-stage
+          tar -C build/bin -czf "dist/Vulpurr-macos-${{ matrix.arch }}.tar.gz" Vulpurr.app
+          cp -a build/bin/Vulpurr.app dmg-stage/
+          ln -s /Applications dmg-stage/Applications
+          hdiutil create -volname "Vulpurr" -srcfolder dmg-stage -ov -format UDZO "dist/Vulpurr-macos-${{ matrix.arch }}.dmg"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-macos-${{ matrix.arch }}
+          path: |
+            dist/Vulpurr-macos-${{ matrix.arch }}.tar.gz
+            dist/Vulpurr-macos-${{ matrix.arch }}.dmg
+
+  windows-x64:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Free disk space
+        run: ${{ env.FREE_DISKSPACE }}
+      - name: Build Windows docker image
+        run: docker build --tag monero:build-env-windows --build-arg THREADS=4 --file Dockerfile.windows .
+      - name: Build wallet and vulpurrd (static)
+        run: docker run --rm -v ${{ github.workspace }}:/monero-gui -w /monero-gui monero:build-env-windows sh -c 'make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64'
+      - name: Build vulpurr-p2pool.exe
+        run: |
+          git clone --recursive https://github.com/vulpurr-network/vulpurr-p2pool.git /tmp/p2pool-src
+          sed -i "s/-j14/-j$(nproc)/g" /tmp/p2pool-src/build-win.sh
+          docker run --rm -v /tmp/p2pool-src:/p2pool -w /p2pool monero:build-env-windows sh /p2pool/build-win.sh
+      - name: Package Windows release archive
+        run: |
+          mkdir -p dist/Vulpurr/p2pool
+          cp build/x86_64-w64-mingw32/release/bin/monero-wallet-gui.exe dist/Vulpurr/vulpurr-wallet.exe
+          cp build/x86_64-w64-mingw32/release/bin/vulpurrd.exe dist/Vulpurr/vulpurrd.exe
+          cp /tmp/p2pool-src/build/p2pool.exe dist/Vulpurr/p2pool/vulpurr-p2pool.exe
+          docker run --rm -v ${{ github.workspace }}/dist/Vulpurr:/p monero:build-env-windows sh -c 'x86_64-w64-mingw32-strip /p/vulpurr-wallet.exe /p/vulpurrd.exe /p/p2pool/vulpurr-p2pool.exe'
+          (cd dist && zip -9 -q -r Vulpurr-win64.zip Vulpurr)
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-windows-x64
+          path: dist/Vulpurr-win64.zip
+
+  release:
+    needs: [linux-x64, macos, windows-x64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          path: release-files
+          merge-multiple: true
+      - name: Compute SHA256SUMS
+        run: |
+          cd release-files
+          sha256sum Vulpurr-* > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            release-files/Vulpurr-*
+            release-files/SHA256SUMS.txt
