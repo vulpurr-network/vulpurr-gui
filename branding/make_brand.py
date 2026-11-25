@@ -149,6 +149,58 @@ def wordmark(w, h, text_color, with_mark=True, font_size=None):
     return svg(w, h, body)
 
 
+
+def installer_welcome():
+    w, h = 164, 314
+    body = f"""<defs>
+      <linearGradient id="iwbg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#2a1854"/>
+        <stop offset="55%" stop-color="#1a1030"/>
+        <stop offset="100%" stop-color="#120926"/>
+      </linearGradient>
+      <radialGradient id="iwglow" cx="50%" cy="34%" r="55%">
+        <stop offset="0%" stop-color="#ff8a3d" stop-opacity="0.34"/>
+        <stop offset="100%" stop-color="#120926" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="iwacc" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ff8a3d"/>
+        <stop offset="100%" stop-color="#ffc46b"/>
+      </linearGradient>
+      {FOX_DEFS}
+    </defs>
+    <rect width="{w}" height="{h}" fill="url(#iwbg)"/>
+    <rect width="{w}" height="{h}" fill="url(#iwglow)"/>
+    {place((w - 112) / 2, 46, 112, mark_body(with_defs=False))}
+    <rect x="48" y="186" width="68" height="3" rx="1.5" fill="url(#iwacc)"/>
+    <text x="{w / 2:.1f}" y="216" text-anchor="middle" font-family="{WORDMARK_FONT}" font-weight="800" font-size="20" letter-spacing="1.6" fill="#fbf6ff">VULPURR</text>
+    <text x="{w / 2:.1f}" y="236" text-anchor="middle" font-family="{WORDMARK_FONT}" font-weight="600" font-size="10.5" letter-spacing="1.2" fill="#b9a9d6">VUP WALLET</text>"""
+    return svg(w, h, body)
+
+
+def installer_header():
+    w, h = 150, 57
+    body = f"""<defs>
+      <linearGradient id="ihbg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#231640"/>
+        <stop offset="100%" stop-color="#120926"/>
+      </linearGradient>
+      {FOX_DEFS}
+    </defs>
+    <rect width="{w}" height="{h}" fill="url(#ihbg)"/>
+    <rect x="0" y="54" width="{w}" height="3" fill="#ff8a3d"/>
+    {place(12, 9, 38, mark_body(with_defs=False))}
+    <text x="58" y="34" font-family="{WORDMARK_FONT}" font-weight="800" font-size="14.5" letter-spacing="0.8" fill="#fbf6ff">VULPURR</text>"""
+    return svg(w, h, body)
+
+
+def render_bmp3(svg_str, out_path, w, h):
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    png_tmp = out_path + ".tmp.png"
+    render(svg_str, png_tmp, w, h)
+    subprocess.run(["convert", png_tmp, "-alpha", "remove", "-background", "#1A1030", "-type", "TrueColor", f"BMP3:{out_path}"], check=True)
+    os.unlink(png_tmp)
+
+
 def write_icns(out_path):
     entries = [
         (b"icp4", 16),
@@ -196,6 +248,8 @@ def main():
         render(wordmark(125, 28, DARK), os.path.join(IMG, "themes", "white", f"titlebarLogo{suffix}.png"), 125 * scale, 28 * scale)
     render(wordmark(132, 22, LIGHT, with_mark=False, font_size=20), os.path.join(IMG, "moneroLogo_white.png"), 132, 22)
     open(os.path.join(IMG, "themes", "white", "Monero-Logo.svg"), "w").write(wordmark(282, 75, DARK, font_size=36))
+    render_bmp3(installer_welcome(), os.path.join(ROOT, "installers", "windows", "vulpurr-welcome.bmp"), 164, 314)
+    render_bmp3(installer_header(), os.path.join(ROOT, "installers", "windows", "vulpurr-header.bmp"), 150, 57)
 
     for size, cx, cy, d in ((32, 9.75, 24.25, 8.5), (64, 19.5, 48.5, 17)):
         fname = "miningxmr.png" if size == 32 else "miningxmr@2x.png"

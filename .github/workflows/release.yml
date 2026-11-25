@@ -57,7 +57,7 @@ jobs:
             make -j"$N" p2pool
             strip p2pool || true
           '
-      - name: Package Linux release archive
+      - name: Package Linux release archive, .deb and AppImage
         run: |
           mkdir -p dist/Vulpurr
           cp build/x86_64-linux-gnu/release/bin/monero-wallet-gui dist/Vulpurr/vulpurr-wallet
@@ -68,10 +68,16 @@ jobs:
           cp images/appicons/256x256.png dist/Vulpurr/vulpurr.png
           sed 's|Exec=monero-wallet-gui|Exec=./vulpurr-wallet|; s|Icon=org.getmonero.Monero|Icon=vulpurr|' share/org.getmonero.Monero.desktop > dist/Vulpurr/vulpurr.desktop
           tar -C dist -czf dist/Vulpurr-linux-x64.tar.gz Vulpurr
+          BUILD=$(grep -oE '#define VULPURR_BUILD[[:space:]]+[0-9]+' src/main/VulpurrVersion.h | awk '{print $3}')
+          sudo apt-get update && sudo apt-get install -y squashfs-tools
+          bash installers/linux/build-packages.sh dist/Vulpurr dist 0.18.5.3 "${BUILD:-0}" images/appicons share/org.getmonero.Monero.desktop
       - uses: actions/upload-artifact@v7
         with:
           name: release-linux-x64
-          path: dist/Vulpurr-linux-x64.tar.gz
+          path: |
+            dist/Vulpurr-linux-x64.AppImage
+            dist/Vulpurr-linux-x64.deb
+            dist/Vulpurr-linux-x64.tar.gz
 
   macos:
     name: macOS ${{ matrix.arch }}
@@ -165,7 +171,7 @@ jobs:
           git clone --recursive https://github.com/vulpurr-network/vulpurr-p2pool.git /tmp/p2pool-src
           sed -i "s/-j14/-j$(nproc)/g" /tmp/p2pool-src/build-win.sh
           docker run --rm -v /tmp/p2pool-src:/p2pool -w /p2pool monero:build-env-windows sh /p2pool/build-win.sh
-      - name: Package Windows release archive
+      - name: Package Windows installer and portable archive
         run: |
           mkdir -p dist/Vulpurr/p2pool
           cp build/x86_64-w64-mingw32/release/bin/monero-wallet-gui.exe dist/Vulpurr/vulpurr-wallet.exe
@@ -173,10 +179,15 @@ jobs:
           cp /tmp/p2pool-src/build/p2pool.exe dist/Vulpurr/p2pool/vulpurr-p2pool.exe
           docker run --rm -v ${{ github.workspace }}/dist/Vulpurr:/p monero:build-env-windows sh -c 'x86_64-w64-mingw32-strip /p/vulpurr-wallet.exe /p/vulpurrd.exe /p/p2pool/vulpurr-p2pool.exe'
           (cd dist && zip -9 -q -r Vulpurr-win64.zip Vulpurr)
+          BUILD=$(grep -oE '#define VULPURR_BUILD[[:space:]]+[0-9]+' src/main/VulpurrVersion.h | awk '{print $3}')
+          sudo apt-get update && sudo apt-get install -y nsis
+          makensis -DVERSION=0.18.5.3 -DBUILD="${BUILD:-0}" -DROOT_DIR="$(pwd)" -DSRC_DIR="$(pwd)/dist/Vulpurr" -DOUT_FILE="$(pwd)/dist/Vulpurr-Setup-win64.exe" installers/windows/vulpurr.nsi
       - uses: actions/upload-artifact@v7
         with:
           name: release-windows-x64
-          path: dist/Vulpurr-win64.zip
+          path: |
+            dist/Vulpurr-Setup-win64.exe
+            dist/Vulpurr-win64.zip
 
   release:
     needs: [linux-x64, macos, windows-x64]
