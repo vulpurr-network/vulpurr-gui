@@ -141,11 +141,11 @@ def card(start, end, glow, scale, light_mode=False):
 
 
 def wordmark(w, h, text_color, with_mark=True, font_size=None):
-    fs = font_size or h * 0.72
-    x = h + h * 0.36 if with_mark else 0
+    fs = font_size or h * 0.58
+    x = h + h * 0.30 if with_mark else 0
     body = (f"<defs>{FOX_DEFS}</defs>" if with_mark else "") + \
         (place(0, 0, h, mark_body(with_defs=False)) if with_mark else "") + \
-        f'<text x="{x}" y="{h * 0.78}" font-family="{WORDMARK_FONT}" font-weight="800" font-size="{fs}" textLength="{w - x - 1}" lengthAdjust="spacingAndGlyphs" fill="{text_color}">VULPURR</text>'
+        f'<text x="{x:.1f}" y="{h * 0.71:.1f}" font-family="{WORDMARK_FONT}" font-weight="800" font-size="{fs:.1f}" letter-spacing="0.6" fill="{text_color}">VULPURR</text>'
     return svg(w, h, body)
 
 

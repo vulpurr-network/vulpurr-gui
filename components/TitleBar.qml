@@ -281,18 +281,6 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
 
                 source: MoneroComponents.Style.titleBarLogoSource
-                visible: {
-                    if(GraphicsInfo.api === GraphicsInfo.Software) return true;
-                    if(!MoneroComponents.Style.blackTheme) return true;
-                    return false;
-                }
-            }
-
-            MultiEffect {
-                visible: GraphicsInfo.api !== GraphicsInfo.Software && MoneroComponents.Style.blackTheme
-                anchors.fill: imgLogo
-                source: imgLogo
-                saturation: -1.0
             }
         }
 
